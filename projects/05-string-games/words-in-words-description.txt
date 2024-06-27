@@ -1,0 +1,43 @@
+WORDS IN WORDS
+
+The aim of the game is to take the letters of 
+the master word and to construct from them 
+as many words as you can.
+Your opponent is constructing the words too.
+Afterwards your and your opponent identical words
+are removed, and each player get points 
+in accordance to the lengths of the rest 
+constructed words.
+
+It is better to play with common nouns only 
+(no ajectives, no verbs, no proper nouns - nouns 
+that name a particular person, place, or thing)
+- in singular form.
+
+- set min length for the master word
+- on click on the "Start Game" button choose master word
+  from the vocabulary and show it 
+
+- player should enter words (one on each line) not
+  shorter than some minimal size 
+
+- on click on "Check the Words" the program will
+
+  a) choose from the vocabulary all the words comprised
+     of the letters of the master words and show them
+
+  b) strikethrough the same words from the player's
+     and it's own list
+
+  c) put near each word a number - amount of letters
+     of the word 
+
+  d) color by red the numbers of the too short words
+
+  e) color by red the wrong letters in the words
+
+  f) show below the lists the sum of the points (only
+     the unique words that were created in accordance
+     to the rules)
+
+The result example is shown at words-in-words-result-example.png

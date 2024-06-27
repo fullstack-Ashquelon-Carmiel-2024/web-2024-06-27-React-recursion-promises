@@ -1,0 +1,83 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 2rem;
+}
+
+.App {
+  display: flex;
+}
+
+.result {
+  display: inline-block;
+  text-align: center;
+  min-width: 15rem;
+  margin-left: 1rem;
+  padding: 0.5rem 0.9rem;
+  box-shadow: 0 5px 5px 5px grey;
+  white-space: pre-wrap;
+}
+
+.btn {
+  font-size: 2rem;
+  padding: 0.7rem;
+  margin: 0.5rem;
+  box-shadow: 2px 2px 2px 0 gray, inset 5px 5px white, inset -5px -5px 2px 1px rgb(235, 207, 145), -1px -1px 2px 1px gray;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+}
+
+.btn:hover, .btn:active {
+  transform: scale(1.1)
+}
+
+.btn:active {
+  box-shadow: -2px -2px 2px 0 gray, inset -5px -5px white, inset 5px 5px 2px 1px rgb(235, 207, 145), 1px 1px 2px 1px gray;
+}
+
+.red {
+  background-color: rgb(173, 4, 4);
+  color: white;
+}
+
+.red:active {
+  background-color: white;
+  color: rgb(173, 4, 4);
+}
+.blue {
+  background-color: rgb(3, 3, 155);
+  color: cornflowerblue;
+}
+
+.blue:active {
+  background-color: cornflowerblue;
+  color: rgb(3, 3, 155);
+}
+.green {
+  background-color: rgb(1, 88, 1);
+  color: rgb(245, 243, 142);
+}
+
+.green:active {
+  background-color: rgb(245, 243, 142);
+  color: rgb(1, 88, 1);
+}
+.orange {
+  background-color: orangered;
+  color: rgb(245, 243, 142);
+}
+
+.orange:active {
+  background-color: rgb(245, 243, 142);
+  color: orangered;
+}
+
+.size {
+  min-width: 40px;
+  min-height: 30px;
+}

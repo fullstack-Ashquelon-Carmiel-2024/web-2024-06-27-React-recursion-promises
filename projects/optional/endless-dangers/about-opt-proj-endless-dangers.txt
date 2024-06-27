@@ -1,0 +1,64 @@
+   Dani plays the game "Endless Dangers". 
+   - from the "usual" HW - make it a project.
+
+   At the beginning each player has some amount of bullets and several grenades.
+   Example:
+   var ammoDani = 140
+   var grDani = 4 
+   var daniIsAlive = true
+
+   There could be two dangers for the player in the game:
+
+   1) "Dragon attack" - dragon could be killed by 4 bullets or 1 grenade
+
+   2) "Hostile armored carriage attack" - armored carriage could be destroyed
+      by 2 grenades with probability 1/2
+
+   Example of game scenario:
+
+      1st danger - the player is threatened by 6 dragons
+
+      2nd danger - the player is threatened by 4 dragons
+
+      3rd danger - the player is threatened by hostile armored carriage
+
+      etc.
+
+   Create function dragons(dragonNum) - it gets the amount of dragons. 
+   The function subtracts bullets or/and grenades of the player,
+   and if there was anough to win all the dragons, returns true
+   (anounces that the player is alive), otherwise - false. 
+
+   Create function hostileCarriage() - 
+   it does not get parameters. The function subtracts the number 
+   of the player grenades by 2 (if they has) and runs the function
+   Math.random().
+   If there was not enough grenades or the function  Math.random()
+   returned number less than 0.5 - the carriage is not destroyed
+   and the player dies. 
+   The function returns the player's state.
+
+   Create function gameScenario() - it gets or the string "dragons"
+   and a number, or the string "carriage" and null.
+   In the first case it runs the function "dragons()" and passes into it 
+   the number of the dragons.
+
+   In the second case it runs the function hostileCarriage(). 
+   
+   Before playing the next part of the scenario the function gameScenario 
+   checks if the status of the player is "alive" or the game has ended.
+
+   Create array gameFlow, for example,
+   var gameFlow = ['dragons','dragons','carriage','dragons','carriage','carriage'];
+
+   Go over it with "forEach" cycle and run for each element gameScenario()
+   with an appropriate parameter ('dragons' or 'carriage').
+   In the case of "dragons" the cycle should run Math.random()
+   and get the number of the dragons from 0 and till the maximum (for example, till 7)
+   - this before running gameScenario("dragons",...).
+
+   This way the player will go through different gaming scenarios.
+
+   Optionally: make a project from this exercise. Illustrate the game by DOM elements.
+
+

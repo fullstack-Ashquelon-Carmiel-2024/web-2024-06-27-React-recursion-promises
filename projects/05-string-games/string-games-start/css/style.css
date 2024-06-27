@@ -1,0 +1,228 @@
+@font-face {
+    font-family: 'carmelit_boldbold';
+    src: url('fonts/carmelit/carmelitbold.eot');
+    src: url('fonts/carmelit/carmelitbold.eot?#iefix') format('embedded-opentype'),
+         url('fonts/carmelit/carmelitbold.woff') format('woff'),
+         url('fonts/carmelit/carmelitbold.ttf') format('truetype'),
+         url('fonts/carmelit/carmelitbold.svg#carmelit_boldbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'carmelit_regularregular';
+    src: url('fonts/carmelit/carmelitregular.eot');
+    src: url('fonts/carmelit/carmelitregular.eot?#iefix') format('embedded-opentype'),
+         url('fonts/carmelit/carmelitregular.woff') format('woff'),
+         url('fonts/carmelit/carmelitregular.ttf') format('truetype'),
+         url('carmelitregular.svg#carmelit_regularregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	--font-and-border-color: #fff;
+	--button-ta-color: cornflowerblue;
+}
+
+body {
+	height: 100vh;
+	width: 100%;
+	background-color: #000000;
+	background-image: url(img/stars_above.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: top;
+	color: var(--font-and-border-color);
+}
+
+.above,
+.below {
+	display: flex;
+	height: 50%;
+}
+
+h2 {
+	font-family: 'carmelit_boldbold', sans-serif;
+	color: var(--font-and-border-color);
+}
+
+button,
+textarea,
+input {
+	vertical-align: bottom;
+	margin: 0.4vw;
+	padding: 0.3vw;
+	border-radius: 0.2vw;
+	background-color: var(--button-ta-color);
+	color: var(--font-and-border-color);
+}
+
+textarea,
+input {
+	background-color: rgba(100, 149, 237, 0.4);
+}
+
+
+.desc {
+	margin-top: 1vw;
+}
+
+.above>div,
+.below>div {
+	margin: 0.5vw;
+	padding: 0.5vw;
+	border: 1px solid var(--font-and-border-color);
+	border-radius: 0.5vw;
+}
+
+.above p,
+.below p {
+}
+
+/* Palindromes */
+
+.palindromes {
+	flex-basis: 0;
+	flex-grow: 1;
+}
+
+.pali-container {
+	display: flex;
+}
+
+/*.texta-container {
+	flex-grow:2;
+}*/
+.the-palindrome {
+	flex-grow: 2;
+}
+
+.pali-container2 {
+	flex-basis: content;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.yes-no,
+.res-calc,
+.your-points,
+.comp-points,
+.anagram-reaction {
+	font-size: 1.5vw;
+	letter-spacing: 0.2vw;
+	text-shadow: 0 0 0.5vw #fff, 0 0 1vw #fff, 0 0 1.5vw #e60073;
+}
+
+/* Clock */
+
+.clock {
+	flex-basis: auto;
+}
+
+.time {
+	font-size: 2vw;
+	letter-spacing: 0.2vw;
+}
+
+.date {
+	font-size: 1.5vw;
+	letter-spacing: 0.2vw;
+}
+
+/* Gematria */
+
+.gematria {
+	flex-basis: 0;
+	flex-grow: 1;
+}
+
+.gematria>h2,
+.gem-input {
+	direction: rtl;
+}
+
+.gem-container {
+	direction: rtl;
+	display: flex;
+}
+
+.res-calc {
+	line-height: 3vw;
+}
+
+/* words inside */
+.words-inside {
+	display: flex;
+	align-items: stretch;
+}
+
+.col.one {
+	display: flex;
+	flex-direction: column;
+	flex-basis:0;
+}
+
+.col.two {
+	flex-grow:1;
+}
+
+.col.three {
+	flex-grow:1;
+}
+
+.your-words,
+.comp-words {
+	height: 82%;
+}
+
+.y-words-div,
+.c-words-div {
+	height: 82%;
+	overflow-y: scroll;
+	width: 95%;
+	display: none;
+	border: 1px dotted #ddd;
+	background-color: rgba(100, 149, 237, 0.4);
+}
+
+.words-inside>.one>p,
+.anagrams .desc {
+	font-size: 0.8rem;
+}
+
+.line-through {
+	text-decoration: line-through;
+}
+
+.red {
+	color: red;
+}
+
+/* Anagrams */
+.flex-container {
+	display: flex;
+}
+
+label {
+	word-wrap: break-word;
+	flex-basis: 0;
+}
+
+.the-answer,
+#comp-anagram {
+	display: none;
+}
+
+.anagram-reaction {
+	word-wrap: break-word;
+}

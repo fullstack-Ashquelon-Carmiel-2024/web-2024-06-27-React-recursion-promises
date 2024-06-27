@@ -1,0 +1,113 @@
+1. Supposedly you've got "git" installation.
+   If not, please download it and install (choose all the defaults,
+   don't change nothing through the installation)
+
+2. One of the parts of "git" installation is "git bash" - this is a "bash" shell
+   (language) environment, and we're going to use it extensively.
+
+   To open "git bash" - on Mac - you know what to do
+                      - on Windows -> go to the "Windows" sign => write "git bash" =>
+                          click "open as Administrator"
+
+   Now you see "Git Bash" command line window.
+
+3. You've got an accound on https://github.com site,
+   your credentials there your email, your username and your password.
+
+   Now you should update your github credentials on your computer.
+
+   So, in git bash window run the next 2 commands (put there right email
+   and right username - if you don't remember your username - get
+   to your github.com account, click on your profile picture - the first
+   thing you see there - is your username):
+
+   $ git config --global user.email "you@example.com"
+   $ git config --global user.name "Your GitHub UserName"
+
+   Like ($ -- is not a part of the command):
+
+   $ git config --global user.email "jane.smith@google.com"
+   $ git config --global user.name "JaneSmith125"
+
+4. Click on the link of the homework. It gets you to the GitHub Classroom.
+   If you first time in this classroom, choose yourself from the list.
+   Now wait a second - the directory (repository) of the homework
+   is being copied especially for you.
+
+   Now you've got a link for your copy - click on it and get there.
+
+   There you see a green button "Code", copy from inside https address
+   of this repository - you're going to use it to copy it on your computer.
+
+5. Get into "Git Bash" window again.
+
+   Write there the next command
+
+   $ cd "the full path to the directory of our course"
+
+   Like:
+
+   $ cd /c/users/jane/web-course
+
+6. Now we'll use command "clone" that will copy the directory (repository)
+   of the homework from GitHub to your computer:
+
+   $ git clone https://github.com/web-Ashquelon-Carmiel-2024-assignments/Web-2024-04-17-addEventListener.git
+
+7. Let's open this dir with VS CODE:
+
+   $ code Web-2024-04-17-addEventListener
+
+8. Now we should move to your local git repository (directory). So we get back
+   to the command window of "Git Bash"
+
+   $ cd "Your directory of the assignment"
+
+   like 
+
+   $ cd Web-2024-04-17-addEventListener
+
+9. To check that everything is OK, for example
+
+    $ git status
+    On branch main
+    Your branch is up to date with 'origin/main'.
+
+    nothing to commit, working tree clean
+
+10. Now you work in VS CODE, add files, perform changes ...
+    When you want to write down the changes into git.
+    You get to the Command line window and the "git status" will show you that
+    now you have changes, for example
+
+    $ git status
+    On branch main
+    Your branch is up to date with 'origin/main'.
+
+    Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git restore <file>..." to discard changes in working directory)
+            modified:   index.html
+            modified:   style.css
+
+11. To add the changes to git perform two next commands
+    $ git add *
+
+    $ git commit -m"first changes"
+
+    Instead of "first changes" you could put any comment
+
+12. You could work more and perform the action 11. from time to time
+
+    When you want to show your changes in GitHub you perform
+
+    $ git push
+
+    This one you could perform any amount of times too
+
+
+13. If you want to unite all the 3 commands into one:
+
+$ git add * && git commit -m"added New.html" && git push
+
+And use Arrow Up or Down to get to the command again

@@ -1,0 +1,6 @@
+ Optional project of math-practice 
+   with drops containing math exercises and 
+   going down. 
+   When the player types right answer, 
+   the drop should stop or disappear or 
+   make some other response.

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timers</title>
+    <link rel="stylesheet" 
+       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/timers.css">
+</head>
+<body class="orange">
+    <div class="container">
+
+        <div class="first purple"></div>
+        <div class="second orange"></div>
+        <div class="third purple">
+            <i class="fa-solid fa-hourglass-start invisible"></i>
+            <i class="fa-solid fa-hourglass-half invisible"></i>
+            <i class="fa-solid fa-hourglass-end invisible"></i>
+        </div>
+
+    </div>
+
+    <button id="show" class="purple">Show!</button>
+    <button id="firstColor" class="orange">Change Color of the First</button>
+    <button id="start"><i class="fa-solid fa-clock"></i> Start</button>
+    <button id="stop"><i class="fa-solid fa-stopwatch"></i> Stop</button>
+
+    <button id="body-blink">Blink Body</button>
+    <button id="change-em">Change Emojees</button>
+
+    <br>
+
+    <input type="number" id="body-blink-num">
+    <button id="stop-body-blink">Stop Body Blinking After 
+        <span>X</span> Times</button>
+
+    <button id="stop-body-blink-now">Stop Body Blinking NOW</button>
+
+    <script src="./js/timers.js"></script>
+    <!-- <script src="./js/forEach.js"></script> -->
+</body>
+</html>

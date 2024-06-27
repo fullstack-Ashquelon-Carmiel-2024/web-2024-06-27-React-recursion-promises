@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/style.css">
+	<title>quoting clock and string games</title>
+</head>
+<body>
+	<section class='above'>
+		<div class="palindromes">
+			<h2>Palindromes</h2>
+			<div class="pali-container">
+			<!--<div class="texta-container">-->
+			<textarea class="the-palindrome"></textarea>
+			<!--</div>-->
+			<div class="pali-container2">
+			<button class="get-palindrome">Palindrome<br>Example</button>
+			<button class="is-palindrome">Is this<br>a Palindrome?</button>
+			<div class="yes-no">Yes!</div>
+			</div>
+			</div>
+			<p class="desc">Palindromes are the lines that being read the same both forward and in the reverse direction. Enter your line and press the "check" button to check if it is a palindrome. Press the "example" button to see random palindrome example.</p>
+		</div>
+		<div class="clock">
+			<div class="date"></div>
+			<div class="time"></div>
+		</div>
+		<div class="gematria">
+			<h2>גימטריה</h2>
+			<div class="gem-container">
+			<input type='text' class="gem-input" value="שלום">
+			<button class="gem-calc">Calculate</button>
+			<div class="res-calc">376</div>
+			</div>
+			<p class="desc">"Gematryia" is the word numerical value calculation while summarizing the values of the letters of Hebrew alphabet. Enter your name in Hebrew and press the button - get value.</p>
+		</div>
+	</section>
+	<section class='below'>
+		<div class="words-inside">
+			<div class="col one">
+			<h2>Words in Words</h2>
+			<button class="start-game">Start Game</button>
+			<label class="master-lbl">Master word:</label>
+			<input type='text' class="master-word" readonly=true>
+			<button class="check-words">Check the Words</button>
+			<p class="desc">Press the button "Start Game". Write down as many as you can nouns consisting of no less than 4 letters of the master word. Press the button "Check the Words".</p>
+			</div>
+			<div class="col two">
+				<label>Your Words</label>
+			<textarea class="your-words"></textarea>
+			<div class="y-words-div"></div>
+				<p class="your-points">0</p>
+			</div>
+			<div class="col three">
+				<label>My Words</label>
+			<textarea class="comp-words" readonly=true></textarea>
+			<div class="c-words-div"></div>
+				<p class="comp-points">0</p>
+			</div>
+		</div>
+		<div class="quotes">
+			<h2>Great quotes</h2>
+			<div class="the-quote"></div>
+			<button class="get-quote">New Quote</button>
+			<p class="desc">Want another quote? Press button "New Quote". As well, you can choose a theme of the quote.</p>
+		</div>
+		<div class="anagrams">
+			<h2>Anagrams</h2>
+			<div class='flex-container'>
+			<button class="new-anagram">New<br>Anagram</button>
+			<div class="anagram-container1">
+			<label class="anagram-lbl" for="anagram">Find anagram of:</label>
+			<input type='text' id="anagram" readonly=true>
+			</div>
+			</div>
+			<div class="anagram-container2">
+			<label class="your-try" for='your-anagram'>Your try:</label>
+			<input type='text' id="your-anagram">
+			</div>
+			<button class="check-anagram">Check<br>Anagram</button>
+			<label class="the-answer" for="comp-anagram">The Answer:</label>
+			<input type='text' id="comp-anagram" readonly=true>
+			<p class="anagram-reaction"></p>
+			<p class="desc">Press the button "New Anagram". Try as hard as you can. Have you succeded in finding anagram? (If there is more than one, type them with commas)</p>
+		</div>
+	</section>
+	<script src="./js/vocab.js"></script>
+	<script src="./js/script.js"></script>
+</body>
+</html>

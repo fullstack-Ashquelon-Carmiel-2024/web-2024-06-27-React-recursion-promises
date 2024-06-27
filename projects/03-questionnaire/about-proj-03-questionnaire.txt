@@ -1,0 +1,16 @@
+1. Prepare at least 3 sets of questions,
+   for example: animals, math, food
+
+2. In each set at least 3 questions
+
+(the sets and the questions could be 
+very simple)
+
+3. The player will choose a set of the questions
+
+4. When he gets question he can answer
+or skip or stop the game
+
+5. He should get some score for the right answer,
+and loose some score for the wrong answer
+

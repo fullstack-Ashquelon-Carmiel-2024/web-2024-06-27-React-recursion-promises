@@ -1,0 +1,43 @@
+THIS PROJECT (HANGMAN)
+Philip and Sharon
+Beni and Or and Michael
+Tehila and Elen
+Adi and Elior
+Yakov and Ido and Daniel
+Talhun and David
+Ron and Sofonias
+Evgeny and Beniamin
+Nisim and Stav
+Yahav and Mark
+Sveta
+Rivka
+Ori
+
+NIM
+
+Or and Rivka
+Elior and Tehila
+Philip and Ido and Yahav
+Elen and Yakov
+Ori and Adi
+Ron and Evgeny
+Beni and David
+Daniel and Sveta
+Sharon and Benjamin
+Michael and Mark
+Talhun and Stav
+Nisim and Sofonias
+
+--------------
+Or and Elior
+Tehila and Rivka
+Philip and Elen
+Yakov and Ido and Ori
+Ron and Adi
+Beni and Evgeny
+Daniel and David
+Sharon and Sveta
+Michael and Benjamin
+Talhun and Mark
+Nisim and Stav
+Yahav and Sofonias

@@ -1,0 +1,1844 @@
+1. Download NodeJS and install Next->Next->Next
+   
+   Odd number of main version number -> newest, but with bugs
+   Even number - stable version, use for production
+
+
+2. Download Git - for get Git Bash together 
+    with it
+
+3. Open terminal in VS Code or 
+   Git Bash separate Window and 
+    check that you've got NodeJS 
+    installed and it's version
+
+$ node -v
+v18.20.0
+
+4. HOW TO RUN js in NodeJS Environment:
+create a program, for example, hello.js,
+get to it's directory and run it:
+
+$ cd nodejs
+$ node hello.js
+
+5. Create directory farm,
+   put there inside overview.html and product.html and
+   put there inside farm/data/data.json 
+
+   JSON - it's a text, specially formatted to be converted to 
+          some object. JavaScript Object Notation - רישום של אובייקט
+
+6. $ cd farm
+
+7. npm - node package manager
+ 
+ It was installed together with NodeJS.
+
+ Initialize the project:
+
+ $ npm init
+
+ This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (farm)
+version: (1.0.0)
+description: NodeJS Express beginner
+entry point: (index.js) farm.js
+test command:
+git repository:
+keywords:
+author: Natalie
+license: (ISC)
+About to write to C:\Users\natal\Desktop\b\Courses\IITC\FullStack_2024_03_20_Ashquelon_Carmiel\course\Web-2024-05-16-Express-AsyncRead\nodejs\farm\package.json:
+
+{
+  "name": "farm",
+  "version": "1.0.0",
+  "description": "NodeJS Express beginner",
+  "main": "farm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Natalie",
+  "license": "ISC"
+}
+
+
+Is this OK? (yes)
+
+
+8. Now we've got new file package.json:
+
+
+{
+  "name": "farm",
+  "version": "1.0.0",
+  "description": "NodeJS Express beginner",
+  "main": "farm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Natalie",
+  "license": "ISC"
+}
+  
+
+  a) It's just text file - we could fix it manually 
+  b) If we want to change it - we should save it for backup
+
+
+9. Install package "express"
+
+  $ cd farm
+  $ npm i express
+    (or
+      $ npm install express)
+
+10. Now we see inside package.json also property
+
+
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+
+  On what packages of what versions my program depends.
+
+11. We see also inside "farm" dir package-lock.json also
+    that contains all the versions of all the dependencies of
+    express and the dir "node-modules" which contains the
+    the installation of express and it's dependencies
+
+12. Create farm/farm.js:
+
+const express = require('express');
+
+let port = 3051;
+
+// Create the server of express.
+// Traditionally we call it "app".
+const app = express();
+
+app.get('/',(req,res) => {
+
+    res.send(`<h1>Sweet, Sweet Home of EXPRESS Server😀</h1>`)
+
+})
+
+app.get('/product',(req,res) => {
+
+    res.send(`<h1>Our farm has the best meat 🥩</h1>`)
+
+})
+
+
+app.listen(port,() => {
+
+    console.log(`Listening on the port ${port} ...`)
+
+})
+
+13. Run the server:
+
+   $ cd farm
+   $ node farm.js
+
+  The server shows in the terminal:
+
+  Listening on the port 3051 ...
+
+14. Now we can send requests from the browser:
+
+localhost:3051 - shows Sweet, Sweet Home of EXPRESS Server😀
+
+or
+
+127.0.0.1:3051
+
+or 
+
+localhost:3051/product - shows Our farm has the best meat 🥩
+
+15. Read data file and show it's content 
+using route "/data":
+
+const express = require('express');
+const fs = require('fs');
+
+let port = 3051;
+
+let dataJSON = fs.readFileSync('./data/data.json','utf-8');
+
+// Create the server of express.
+// Traditionally we call it "app".
+const app = express();
+
+app.get('/',(req,res) => {
+
+    res.send(`<h1>Sweet, Sweet Home of EXPRESS Server😀</h1>`)
+
+})
+
+app.get('/product',(req,res) => {
+
+    res.send(`<h1>Our farm has the best meat 🥩</h1>`)
+
+})
+
+// MISSION: create route to get /data and to send
+//    the whole dataJSON
+
+app.get('/data',(req,res) => {
+
+    res.send(dataJSON);
+
+})
+
+app.listen(port,() => {
+
+    console.log(`Listening on the port ${port} ...`)
+
+})
+
+16. To see the change, restart the server:
+
+Ctrl-C
+$ node farm.js
+
+17. When we want to start the server after that 
+   "node_modules" were deleted:
+
+   $ npm install
+   or
+   $ npm i
+
+18. Show that JSON is a text and not an array:
+
+farm.js:
+
+const express = require('express');
+const fs = require('fs');
+
+let port = 3051;
+
+let dataJSON = fs.readFileSync('./data/data.json','utf-8');
+console.log('***********************')
+console.log(`dataJSON[0]=${dataJSON[0]}`)
+console.log(`dataJSON[3]=${dataJSON[3]}`)
+console.log(`dataJSON[4]=${dataJSON[4]}`)
+console.log(`dataJSON[5]=${dataJSON[5]}`)
+console.log('***********************')
+
+19. Install for development globally nodemon package:
+
+$ npm -d -g i nodemon
+// npm - node package manager
+// -d - for Development (not a dependancy)
+//     nothing is added to the dependencies 
+//     in package.json
+// -g - globally (for the future projects too)
+// i - install 
+// nodemon - package for tracking changes
+//      in some types of files and automatic
+//      restart of the server
+
+20. To run the server now:
+
+$ nodemon farm.js
+
+to restart it we could write
+rs + 'Enter'
+
+21. Now parse dataJSON into array dataAr
+and show that now it is an array of objects.
+
+With index 3 it is an object of carrot.
+
+farm.js:
+
+const express = require('express');
+const fs = require('fs');
+
+let port = 3051;
+
+let dataJSON = fs.readFileSync('./data/data.json','utf-8');
+const dataAr = JSON.parse(dataJSON);
+console.log('***********************')
+console.log(`dataAr[3]=${dataAr[3]}`)
+console.log('***********************')
+
+...........................
+...........................
+...........................
+
+app.get('/data',(req,res) => {
+
+    res.send(dataJSON);
+
+})
+
+app.get('/carrot',(req,res) => {
+
+    res.send(dataAr[3]);
+
+})
+
+22. To see the properties of one object,
+in farm.js:
+
+let dataJSON = fs.readFileSync('./data/data.json','utf-8');
+const dataAr = JSON.parse(dataJSON);
+console.log('***********************')
+console.log(`dataAr[3].image=${dataAr[3].image}`)
+console.log(`dataAr[3].productName=${dataAr[3].productName}`)
+console.log('***********************')
+
+23. Make dir farm/templates and move there 
+   overview.html and product.html
+
+   Copy product.html to productTempl.html 
+
+24. Started to prepare template in productTempl.html
+
+Instead of Fresh Avocado we put %*PRODUCTNAME*% and instead of avocado emojee
+we put %*IMAGE*%
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Megrim|Nunito+Sans:400,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/155/ear-of-maize_1f33d.png"
+    />
+
+    <title>%*PRODUCTNAME*% %*IMAGE*% /// NODE FARM</title>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+
+      html {
+        font-size: 62.5%;
+        box-sizing: border-box;
+      }
+
+      body {
+        padding: 5rem 5rem 10rem;
+        line-height: 1.7;
+        font-family: 'Nunito Sans', sans-serif;
+        color: #555;
+        min-height: 100vh;
+        background: linear-gradient(to bottom right, #9be15d, #00e3ae);
+      }
+
+      h1 {
+        font-family: 'Megrim', sans-serif;
+        font-size: 6rem;
+        color: white;
+        transform: skewY(-5deg);
+        text-align: center;
+        position: relative;
+        word-spacing: 3px;
+      }
+
+      h1::before {
+        content: '';
+        display: block;
+        height: 65%;
+        width: 49%;
+        position: absolute;
+        top: 105%;
+        left: 50%;
+        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        opacity: 0.8;
+        z-index: -1;
+        transform: skewY(370deg) translate(-50%, -50%);
+      }
+
+      .container {
+        width: 95rem;
+        margin: 0 auto;
+      }
+
+      .product {
+        width: 60rem;
+        margin: 0 auto;
+        margin-top: 9rem;
+        background: white;
+        box-shadow: 0 3rem 6rem 1rem rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+
+      .product__hero {
+        position: relative;
+        height: 22rem;
+        overflow: hidden;
+      }
+
+      .product__hero::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-image: linear-gradient(to left bottom, #9be15d, #00e3ae);
+        opacity: 0.5;
+        z-index: 100;
+      }
+
+      .product__emoji {
+        font-size: 15rem;
+        position: absolute;
+      }
+
+      .product__emoji--1 {
+        top: -4rem;
+        left: -2rem;
+        z-index: 10;
+      }
+
+      .product__emoji--2 {
+        top: -6rem;
+        left: 9rem;
+      }
+
+      .product__emoji--3 {
+        top: -4rem;
+        right: 15rem;
+      }
+
+      .product__emoji--4 {
+        top: -5rem;
+        right: 2rem;
+        z-index: 10;
+      }
+
+      .product__emoji--5 {
+        bottom: -9rem;
+        left: 18rem;
+      }
+
+      .product__emoji--6 {
+        bottom: -8rem;
+        left: 5rem;
+      }
+
+      .product__emoji--7 {
+        bottom: -12rem;
+        right: 14rem;
+      }
+
+      .product__emoji--8 {
+        bottom: -8rem;
+        right: -2rem;
+      }
+
+      .product__emoji--9 {
+        top: -7rem;
+        left: 19rem;
+      }
+
+      .product__organic {
+        position: absolute;
+        top: -4rem;
+        right: -4rem;
+        z-index: 1000;
+        height: 11rem;
+        width: 11rem;
+        background-image: linear-gradient(to bottom, #9be15d, #00e3ae);
+        border-radius: 50%;
+        transform: rotate(15deg);
+        box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product__organic h5 {
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 1.8rem;
+        color: white;
+      }
+
+      .product__back:link,
+      .product__back:visited {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+        z-index: 1000;
+        color: #555;
+        background-color: white;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+        border-radius: 100rem;
+        padding: 0 2rem;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+      }
+
+      .product__back:hover,
+      .product__back:active {
+        background-color: #79e17b;
+      }
+
+      .product__name {
+        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        padding: 1rem;
+        font-family: 'Megrim', sans-serif;
+        font-size: 4rem;
+        color: white;
+        text-align: center;
+        word-spacing: 2px;
+      }
+
+      .product__details {
+        background-color: #eee;
+        padding: 4rem 6rem;
+        font-size: 1.9rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1.5rem;
+      }
+
+      .product__description {
+        padding: 5rem 6rem;
+        font-size: 1.6rem;
+        line-height: 1.8;
+      }
+
+      .product__link:link,
+      .product__link:visited {
+        display: block;
+        background-color: #79e17b;
+        color: white;
+        font-size: 1.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem;
+        text-align: center;
+        transform: scale(1.07) skewX(-20deg);
+        box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+      }
+
+      .product__link:hover,
+      .product__link:active {
+        background-color: #9be15d;
+        transform: scale(1.1) skewX(-20deg);
+      }
+
+      .product__link span {
+        transform: skewX(20deg);
+      }
+
+      .emoji-left {
+        font-size: 2rem;
+        margin-right: 1rem;
+      }
+
+      .emoji-right {
+        font-size: 2rem;
+        margin-left: 1rem;
+      }
+
+      .not-organic {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🌽 Node Farm 🥦</h1>
+
+      <figure class="product">
+        <div class="product__organic"><h5>Organic</h5></div>
+        <a href="#" class="product__back">
+          <span class="emoji-left">👈</span>Back
+        </a>
+        <div class="product__hero">
+          <span class="product__emoji product__emoji--1">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--2">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--3">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--4">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--5">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--6">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--7">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--8">%*IMAGE*%</span>
+          <span class="product__emoji product__emoji--9">%*IMAGE*%</span>
+        </div>
+        <h2 class="product__name">%*PRODUCTNAME*%</h2>
+        <div class="product__details">
+          <p><span class="emoji-left">🌍</span> From Portugal</p>
+          <p><span class="emoji-left">❤️</span> Vitamin B, Vitamin K</p>
+          <p><span class="emoji-left">📦</span> 4 🥑</p>
+          <p><span class="emoji-left">🏷</span> 6.50€</p>
+        </div>
+  
+        <a href="#" class="product__link">
+          <span class="emoji-left">🛒</span>
+          <span>Add to shopping card (6.50€)</span>
+        </a>
+  
+        <p class="product__description">
+          A ripe avocado yields to gentle pressure when held in the palm of the
+          hand and squeezed. The fruit is not sweet, but distinctly and subtly
+          flavored, with smooth texture. The avocado is popular in vegetarian
+          cuisine as a substitute for meats in sandwiches and salads because of
+          its high fat content. Generally, avocado is served raw, though some
+          cultivars, including the common 'Hass', can be cooked for a short time
+          without becoming bitter. It is used as the base for the Mexican dip
+          known as guacamole, as well as a spread on corn tortillas or toast,
+          served with spices.
+        </p>
+      </figure>
+      
+    </div>
+  </body>
+</html>
+
+25. Read the template inside farm.js and replace the string of %*PRODUCTNAME*%:
+
+const express = require('express');
+const fs = require('fs');
+
+let port = 3051;
+
+let dataJSON = fs.readFileSync('./data/data.json','utf-8');
+const dataAr = JSON.parse(dataJSON);
+
+let productTempl = fs.readFileSync('./templates/productTempl.html','utf-8');
+console.log(productTempl)
+
+// Create the server of express.
+// Traditionally we call it "app".
+const app = express();
+
+app.get('/',(req,res) => {
+
+    res.send(`<h1>Sweet, Sweet Home of EXPRESS Server😀</h1>`)
+
+})
+
+app.get('/product',(req,res) => {
+
+    res.send(`<h1>Our farm has the best meat 🥩</h1>`)
+
+})
+
+// MISSION: create route to get /data and to send
+//    the whole dataJSON
+
+app.get('/data',(req,res) => {
+
+    res.send(dataJSON);
+
+})
+
+app.get('/carrot',(req,res) => {
+
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName));
+
+})
+
+app.listen(port,() => {
+
+    console.log(`Listening on the port ${port} ...`)
+
+})
+
+26. And chain it:
+
+app.get('/carrot',(req,res) => {
+
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[3].image));
+
+})
+
+27. Copy the routing for the carrot:
+
+app.get('/product/:id',(req,res) => {
+
+    console.log('req.params:\n',req.params)
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[3].image));
+
+})
+
+28. // This is an example for 2 parameters
+app.get('/product/:id/:color',(req,res) => {
+
+    console.log('req.params:\n',req.params)
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[3].image));
+
+})
+
+29. Convert /product route to general:
+
+app.get('/product/:id',(req,res) => {
+
+    console.log('req.params:\n',req.params)
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[req.params.id].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[req.params.id].image));
+
+})
+
+30. Create farm/modules/replace-templ.js:
+
+/** obj
+ * {
+    "id": 1,
+    "productName": "Goat and Sheep Cheese",
+    "image": "🧀",
+    "from": "Portugal",
+    "nutrients": "Vitamin A, Calcium",
+    "quantity": "250g",
+    "price": "5.00",
+    "organic": false,
+    "description": "Creamy and distinct in flavor, goat cheese is a dairy product enjoyed around the world. Goat cheese comes in a wide variety of flavors and textures, from soft and spreadable fresh cheese to salty, crumbly aged cheese. Although it’s made using the same coagulation and separation process as cheese made from cow’s milk, goat cheese differs in nutrient content."
+  }
+ */
+
+module.exports = function(templ, obj) {
+
+    return templ.replaceAll('%*PRODUCTNAME*%',obj.productName)
+                .replaceAll('%*IMAGE*%',obj.image);
+
+}
+
+31. Import the module to farm.js:
+
+const express = require('express');
+const fs = require('fs');
+
+const replaceTempl = require('./modules/replace-templ');
+
+32. Now use it in farm.js:
+
+const express = require('express');
+const fs = require('fs');
+
+const replaceTempl = require('./modules/replace-templ');
+
+let port = 3051;
+
+let dataJSON = fs.readFileSync('./data/data.json','utf-8');
+const dataAr = JSON.parse(dataJSON);
+
+let productTempl = fs.readFileSync('./templates/productTempl.html','utf-8');
+
+// Create the server of express.
+// Traditionally we call it "app".
+const app = express();
+
+app.get('/',(req,res) => {
+
+    res.send(`<h1>Sweet, Sweet Home of EXPRESS Server😀</h1>`)
+
+})
+
+app.get('/product',(req,res) => {
+
+    res.send(`<h1>Our farm has the best meat 🥩</h1>`)
+
+})
+
+// MISSION: create route to get /data and to send
+//    the whole dataJSON
+
+app.get('/data',(req,res) => {
+
+    res.send(dataJSON);
+
+})
+
+app.get('/carrot',(req,res) => {
+
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[3].image));
+
+})
+
+app.get('/product/:id',(req,res) => {
+
+    console.log('req.params:\n',req.params)
+
+    res.send(replaceTempl(productTempl, dataAr[req.params.id]));
+    /* res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[req.params.id].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[req.params.id].image)); */
+
+})
+/* app.get('/product/:id',(req,res) => {
+
+    console.log('req.params:\n',req.params)
+
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[req.params.id].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[req.params.id].image));
+
+}) */
+
+// This is an example for 2 parameters
+app.get('/product/:id/:color',(req,res) => {
+
+    console.log('req.params:\n',req.params)
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName)
+                         .replaceAll('%*IMAGE*%',dataAr[3].image));
+
+})
+
+app.listen(port,() => {
+
+    console.log(`Listening on the port ${port} ...`)
+
+})
+
+33. Backup package.json 
+ just copy it to package-backup.json
+
+ Add script for starting the server, like this:
+
+ "scripts": {
+    "start": "nodemon farm.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+34. Now we're going to start the server with 
+    "npm start":
+
+    $ npm start
+
+    > farm@1.0.0 start
+    > nodemon farm.js
+
+    [nodemon] 3.1.0
+    [nodemon] to restart at any time, enter `rs`
+    [nodemon] watching path(s): *.*
+    [nodemon] watching extensions: js,mjs,cjs,json
+    [nodemon] starting `node farm.js`
+    Listening on the port 3051 ...
+
+35. Make the module replace-templ.js more general:
+
+/** obj
+ * {
+    "id": 1,
+    "productName": "Goat and Sheep Cheese",
+    "image": "🧀",
+    "from": "Portugal",
+    "nutrients": "Vitamin A, Calcium",
+    "quantity": "250g",
+    "price": "5.00",
+    "organic": false,
+    "description": "Creamy and distinct in flavor, goat cheese is a dairy product enjoyed around the world. Goat cheese comes in a wide variety of flavors and textures, from soft and spreadable fresh cheese to salty, crumbly aged cheese. Although it’s made using the same coagulation and separation process as cheese made from cow’s milk, goat cheese differs in nutrient content."
+  }
+ */
+
+module.exports = function(templ, obj) {
+
+    /* return templ.replaceAll('%*PRODUCTNAME*%',obj.productName)
+                .replaceAll('%*IMAGE*%',obj.image)
+                .replaceAll('%*PRICE*%',obj.price)
+                .replaceAll('%*DESCRIPTION*%',obj.description)
+                ; */
+    let newStr = templ;
+    const entries = Object.entries(obj);
+    entries.forEach(entry => {
+
+      newStr = newStr.replaceAll(`%*${entry[0].toUpperCase()}*%`,entry[1])
+
+    })
+
+    return newStr;
+}
+
+36. In productTempl.html set the link to the home page 
+    as in the ROUTER:
+
+    <figure class="product">
+        <div class="product__organic"><h5>Organic</h5></div>
+        <a href="/" class="product__back">
+          <span class="emoji-left">👈</span>Back
+
+
+    Now when we click "back" on the product page, 
+    we go over to the home page 
+
+37. Prepare from copy of productTempl.html
+new file 404ProductTempl.html:
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Megrim|Nunito+Sans:400,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/155/ear-of-maize_1f33d.png"
+    />
+
+    <title>404 Product Not Found /// NODE FARM</title>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+
+      html {
+        font-size: 62.5%;
+        box-sizing: border-box;
+      }
+
+      body {
+        padding: 5rem 5rem 10rem;
+        line-height: 1.7;
+        font-family: 'Nunito Sans', sans-serif;
+        color: #555;
+        min-height: 100vh;
+        background: linear-gradient(to bottom right, #9be15d, #00e3ae);
+      }
+
+      h1 {
+        font-family: 'Megrim', sans-serif;
+        font-size: 6rem;
+        color: white;
+        transform: skewY(-5deg);
+        text-align: center;
+        position: relative;
+        word-spacing: 3px;
+      }
+
+      h1::before {
+        content: '';
+        display: block;
+        height: 65%;
+        width: 49%;
+        position: absolute;
+        top: 105%;
+        left: 50%;
+        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        opacity: 0.8;
+        z-index: -1;
+        transform: skewY(370deg) translate(-50%, -50%);
+      }
+
+      .container {
+        width: 95rem;
+        margin: 0 auto;
+      }
+
+      .product {
+        width: 60rem;
+        margin: 0 auto;
+        margin-top: 9rem;
+        background: white;
+        box-shadow: 0 3rem 6rem 1rem rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+
+      .product__hero {
+        position: relative;
+        height: 22rem;
+        overflow: hidden;
+      }
+
+      .product__hero::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-image: linear-gradient(to left bottom, #9be15d, #00e3ae);
+        opacity: 0.5;
+        z-index: 100;
+      }
+
+      .product__emoji {
+        font-size: 15rem;
+        position: absolute;
+      }
+
+      .product__emoji--1 {
+        top: -4rem;
+        left: -2rem;
+        z-index: 10;
+      }
+
+      .product__emoji--2 {
+        top: -6rem;
+        left: 9rem;
+      }
+
+      .product__emoji--3 {
+        top: -4rem;
+        right: 15rem;
+      }
+
+      .product__emoji--4 {
+        top: -5rem;
+        right: 2rem;
+        z-index: 10;
+      }
+
+      .product__emoji--5 {
+        bottom: -9rem;
+        left: 18rem;
+      }
+
+      .product__emoji--6 {
+        bottom: -8rem;
+        left: 5rem;
+      }
+
+      .product__emoji--7 {
+        bottom: -12rem;
+        right: 14rem;
+      }
+
+      .product__emoji--8 {
+        bottom: -8rem;
+        right: -2rem;
+      }
+
+      .product__emoji--9 {
+        top: -7rem;
+        left: 19rem;
+      }
+
+      .product__organic {
+        position: absolute;
+        top: -4rem;
+        right: -4rem;
+        z-index: 1000;
+        height: 11rem;
+        width: 11rem;
+        background-image: linear-gradient(to bottom, #9be15d, #00e3ae);
+        border-radius: 50%;
+        transform: rotate(15deg);
+        box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product__organic h5 {
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 1.8rem;
+        color: white;
+      }
+
+      .product__back:link,
+      .product__back:visited {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+        z-index: 1000;
+        color: #555;
+        background-color: white;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+        border-radius: 100rem;
+        padding: 0 2rem;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+      }
+
+      .product__back:hover,
+      .product__back:active {
+        background-color: #79e17b;
+      }
+
+      .product__name {
+        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        padding: 1rem;
+        font-family: 'Megrim', sans-serif;
+        font-size: 4rem;
+        color: white;
+        text-align: center;
+        word-spacing: 2px;
+      }
+
+      .product__details {
+        background-color: #eee;
+        padding: 4rem 6rem;
+        font-size: 1.9rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1.5rem;
+      }
+
+      .product__description {
+        padding: 5rem 6rem;
+        font-size: 1.6rem;
+        line-height: 1.8;
+      }
+
+      .product__link:link,
+      .product__link:visited {
+        display: block;
+        background-color: #79e17b;
+        color: white;
+        font-size: 1.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem;
+        text-align: center;
+        transform: scale(1.07) skewX(-20deg);
+        box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+      }
+
+      .product__link:hover,
+      .product__link:active {
+        background-color: #9be15d;
+        transform: scale(1.1) skewX(-20deg);
+      }
+
+      .product__link span {
+        transform: skewX(20deg);
+      }
+
+      .emoji-left {
+        font-size: 2rem;
+        margin-right: 1rem;
+      }
+
+      .emoji-right {
+        font-size: 2rem;
+        margin-left: 1rem;
+      }
+
+      .not-organic {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🌽 Node Farm 🥦</h1>
+
+      <figure class="product">
+        
+        <a href="/" class="product__back">
+          <span class="emoji-left">👈</span>Back
+        </a>
+        <div class="product__hero">
+          <span class="product__emoji product__emoji--1">404</span>
+          <span class="product__emoji product__emoji--2">404</span>
+          <span class="product__emoji product__emoji--3">404</span>
+          <span class="product__emoji product__emoji--4">404</span>
+          <span class="product__emoji product__emoji--5">404</span>
+          <span class="product__emoji product__emoji--6">404</span>
+          <span class="product__emoji product__emoji--7">404</span>
+          <span class="product__emoji product__emoji--8">404</span>
+          <span class="product__emoji product__emoji--9">404</span>
+        </div>
+        <h2 class="product__name">404 Product Not Found</h2>
+        
+  
+      </figure>
+      
+    </div>
+  </body>
+</html>
+
+38. Now in farm.js read the new template too and perform the check and
+    use the template:
+
+    const express = require('express');
+const fs = require('fs');
+
+const replaceTempl = require('./modules/replace-templ');
+
+/***** Our Variables *****/
+let port = 3051;
+
+
+/***** Reading the Files *****/
+let dataJSON = fs.readFileSync('./data/data.json','utf-8');
+const dataAr = JSON.parse(dataJSON);
+
+let productTempl = fs.readFileSync('./templates/productTempl.html','utf-8');
+let product404Templ = fs.readFileSync('./templates/404ProductTempl.html','utf-8');
+
+/***** Create the Server *****/
+// Create the server of express.
+// Traditionally we call it "app".
+const app = express();
+
+/***** Router *****/
+app.get('/',(req,res) => {
+    
+    res.send(`<h1>Sweet, Sweet Home of EXPRESS Server😀</h1>`)
+    
+})
+
+app.get('/product',(req,res) => {
+
+    res.send(`<h1>Our farm has the best meat 🥩</h1>`)
+    
+})
+
+// MISSION: create route to get /data and to send
+//    the whole dataJSON
+
+app.get('/data',(req,res) => {
+    
+    res.send(dataJSON);
+    
+})
+
+app.get('/carrot',(req,res) => {
+    
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName)
+    .replaceAll('%*IMAGE*%',dataAr[3].image));
+    
+})
+
+app.get('/product/:id',(req,res) => {
+    
+    console.log('req.params:\n',req.params)
+    let id = req.params.id;
+
+    0 <= id && id < dataAr.length ?
+        res.send(replaceTempl(productTempl, dataAr[id])) :
+        res.status(404).send(product404Templ);
+    /* res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[req.params.id].productName)
+    .replaceAll('%*IMAGE*%',dataAr[req.params.id].image)); */
+    
+})
+
+39. To be able to run the server from some other location, for example, 
+    from the current lesson, like this:
+
+    $ node ./nodejs/farm/farm.js 
+
+
+    We should make the path to the files to be absolute and to use 
+    the variable __dirname that tell us where sits the running file.
+
+    We need for this the module "path" to join all the parts 
+    of the path in the right way.
+
+    farm.js:
+
+    const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const replaceTempl = require('./modules/replace-templ');
+
+/***** Our Variables *****/
+let port = 3051;
+let dataDir = 'data';
+let templDir = 'templates';
+
+console.log(`__dirname: \n${__dirname}`)
+/***** Reading the Files *****/
+let dataJSON = fs.readFileSync(path.join(__dirname,dataDir,'data.json'),'utf-8');
+const dataAr = JSON.parse(dataJSON);
+
+let productTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'productTempl.html'),'utf-8');
+let product404Templ = fs.readFileSync(
+    path.join(__dirname,templDir,'404ProductTempl.html'),'utf-8');
+
+40. Add to data.json entry for mayonaise product
+
+Create farm/public/icons directory 
+and put there the favicon file, 
+and create farm/public/assets/img directory
+and put there the mayonaise image file
+
+41. Add middleware to tell Express, where are 
+the static files and to enable it to send them 
+to the browser:
+
+/***** MIDDLEWARE *****/
+app.use(express.static(path.join(__dirname,'public')));
+
+/***** Router *****/
+app.get(['/',`${hostingDir}/`],(req,res) => {
+    
+    res.send(`<h1>Sweet, Sweet Home of EXPRESS Server😀</h1>`)
+    
+})
+
+42. Replace also in the <HEAD> of productTempl.html the favicon link by
+
+    <link
+      rel="icon"
+      href="/icons/ear-of-maize_1f33d.png"
+    />
+
+    Restart and check that you see now the favicon too
+
+43. Now in farm.js we've made some preparations for 
+the deployment on the hosting.
+
+Some variables:
+
+/***** Our Variables *****/
+let port = process.env.PORT ? process.env.PORT : 3051;
+let dataDir = 'data';
+let templDir = 'templates';
+let hostingDir = '/natalie/farm';
+
+And in the main routes:
+
+/***** Router *****/
+app.get(['/',`${hostingDir}/`],(req,res) => {
+    
+    res.send(`<h1>Sweet, Sweet Home of EXPRESS Server😀</h1>`)
+    
+})
+
+..................................
+
+app.get(['/product/:id',`${hostingDir}/product/:id`],(req,res) => {
+    
+    console.log('req.params:\n',req.params)
+    let id = req.params.id;
+
+    0 <= id && id < dataAr.length ?
+        res.send(replaceTempl(productTempl, dataAr[id])) :
+        res.status(404).send(product404Templ);
+    /* res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[req.params.id].productName)
+    .replaceAll('%*IMAGE*%',dataAr[req.params.id].image)); */
+    
+})
+
+44. Copy overview.html to homeTempl.html 
+
+45. From it's <body> remove all the <figure> and leave only 
+  <body>
+    <div class="container">
+      <h1>🌽 Node Farm 🥦</h1>
+
+      <div class="cards-container">
+
+      </div>
+    </div>
+  </body>
+
+46. Add there the "hole" for the whole figure list:
+
+     <body>
+    <div class="container">
+      <h1>🌽 Node Farm 🥦</h1>
+
+      <div class="cards-container">
+        %*FIGURELIST*%
+      </div>
+    </div>
+  </body>
+
+47. Replace also the favicon link in the HEAD of homeTempl.html 
+    by 
+        <link
+      rel="icon"
+      href="/icons/ear-of-maize_1f33d.png"
+    />
+48. Now we read the file  in farm.js:
+
+/***** Reading the Files *****/
+let dataJSON = fs.readFileSync(path.join(__dirname,dataDir,'data.json'),'utf-8');
+const dataAr = JSON.parse(dataJSON);
+
+let productTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'productTempl.html'),'utf-8');
+let product404Templ = fs.readFileSync(
+    path.join(__dirname,templDir,'404ProductTempl.html'),'utf-8');
+let homeTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'homeTempl.html'),'utf-8');
+
+49. Change in farm.js the route for the "home" page accordingly:
+
+/***** Router *****/
+app.get(['/',`${hostingDir}/`],(req,res) => {
+    
+    let figureList = '';
+    res.send(homeTempl.replace('%*FIGURELIST*%',figureList))
+    
+})
+
+Now the main page gets only the title and stays empty of figures
+
+50. Copy one whole figure from templates/overview.html to 
+    templates/figureTempl.html:
+
+     <figure class="card">
+          <div class="card__emoji">🥑🥑</div>
+
+          <div class="card__title-box">
+            <h2 class="card__title">Fresh Avocado</h2>
+          </div>
+
+          <div class="card__details">
+            <div class="card__detail-box">
+              <h6 class="card__detail card__detail--organic">Organic!</h6>
+            </div>
+
+            <div class="card__detail-box">
+              <h6 class="card__detail">4 🥑 per 📦</h6>
+            </div>
+
+            <div class="card__detail-box">
+              <h6 class="card__detail card__detail--price">6.50€</h6>
+            </div>
+          </div>
+
+          <a class="card__link" href="#">
+            <span>Detail <i class="emoji-right">👉</i></span>
+          </a>
+        </figure>
+
+51. figureTempl.html. Convert it to a template:
+
+<figure class="card">
+    <div class="card__emoji">%*IMAGE*%%*IMAGE*%</div>
+
+    <div class="card__title-box">
+      <h2 class="card__title">%*PRODUCTNAME*%</h2>
+    </div>
+
+    <div class="card__details">
+      <div class="card__detail-box">
+        <h6 class="card__detail card__detail--organic">Organic!</h6>
+      </div>
+
+      <div class="card__detail-box">
+        <h6 class="card__detail">%*QUANTITY*%</h6>
+      </div>
+
+      <div class="card__detail-box">
+        <h6 class="card__detail card__detail--price">%*PRICE*%€</h6>
+      </div>
+    </div>
+
+    <a class="card__link" href="#">
+      <span>Detail <i class="emoji-right">👉</i></span>
+    </a>
+  </figure>
+
+  52. figureTempl.html:
+
+  Make the link to use the router:
+
+  <a class="card__link" href="#">
+      <span>Detail <i class="emoji-right">👉</i></span>
+    </a>
+
+  replace by
+
+  <a class="card__link" href="/product/%*ID*%">
+      <span>Detail <i class="emoji-right">👉</i></span>
+    </a>
+
+  53. In farm.js read figureTempl.html too:
+
+  /***** Reading the Files *****/
+let dataJSON = fs.readFileSync(path.join(__dirname,dataDir,'data.json'),'utf-8');
+const dataAr = JSON.parse(dataJSON);
+
+let productTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'productTempl.html'),'utf-8');
+let product404Templ = fs.readFileSync(
+    path.join(__dirname,templDir,'404ProductTempl.html'),'utf-8');
+let homeTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'homeTempl.html'),'utf-8');
+let figureTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'figureTempl.html'),'utf-8');
+
+54. Now inside the "home" route go over all the objects in the dataAr
+     and create new array - of figures, by using our module replaceTempl:
+
+let figureList = dataAr.map(obj => replaceTempl(figureTempl,obj));
+
+ But figureList should be a part of HTML, so it should be a string,
+ it means, we should join all the parts of the new array into one string:
+
+let figureList = dataAr.map(obj => replaceTempl(figureTempl,obj)).join('');
+
+55. Now we should see the home page as a beautiful list of cards,
+clickable,
+but the mayonaise image is too large, so inside homeTempl.html 
+inside <STYLE> we should resize it:
+
+      .product-img {
+        max-width: 4.5rem;
+        max-height: 4.5rem;
+      }
+
+56. Also we resize it in productTempl.html <STYLE>: 
+
+      .product-img {
+        max-width: 4.5rem;
+        max-height: 4.5rem;
+      }
+
+57. Inside productTempl.html and homeTempl.html we've got in <STYLE>: 
+
+      .not-organic {
+        display: none;
+      }
+
+58. Inside productTempl.html we've got:
+
+<div class="product__organic"><h5>Organic</h5></div>
+
+We'll put here some sign to be able to add class of .not-organic 
+for the not organic products:
+
+<div class="product__organic %*NOTORGANIC*%"><h5>Organic</h5></div>
+
+59. Iside figureTempl.html we've got:
+
+     <div class="card__detail-box">
+        <h6 class="card__detail card__detail--organic">Organic!</h6>
+      </div>
+
+    So here we've could use this sign inside, like this:
+
+     <div class="card__detail-box">
+        <h6 class="card__detail card__detail--organic  %*NOTORGANIC*%">Organic!</h6>
+      </div>
+
+    Or outside, like this:
+
+     <div class="card__detail-box  %*NOTORGANIC*%">
+        <h6 class="card__detail card__detail--organic">Organic!</h6>
+      </div>
+
+    Choose the option you like most.
+
+60. Now let's add the treatment for this sign into the module replace-templates.js
+
+module.exports = function(templ, obj) {
+
+    /* return templ.replaceAll('%*PRODUCTNAME*%',obj.productName)
+                .replaceAll('%*IMAGE*%',obj.image)
+                .replaceAll('%*PRICE*%',obj.price)
+                .replaceAll('%*DESCRIPTION*%',obj.description)
+                ; */
+    let newStr = templ;
+    const entries = Object.entries(obj);
+    entries.forEach(entry => {
+
+      newStr = newStr.replaceAll(`%*${entry[0].toUpperCase()}*%`,entry[1])
+
+    })
+
+    newStr = newStr.replaceAll('%*NOTORGANIC*%',obj.organic ? '' : 'not-organic');
+
+    return newStr;
+}
+
+61. Copy from data-other.json the eggplant entry to data.json or create your own entry,
+    see that everything works with the new entry too.
+
+62. /*********************************************/
+
+           PREPARE FOR DEPLOYMENT
+
+ /*********************************************/
+
+farm/.env:
+
+    export NODE_ENV='development';
+    
+Stop the server (Ctrl-C)
+
+Run .env inside the terminal:
+
+$ source .env
+
+$ npm start
+
+63. In farm.js add hostingDir variable and use it in the routing:
+
+/***** Our Variables *****/
+let port = process.env.PORT ? process.env.PORT : 3051;
+
+let dataDir = 'data';
+let templDir = 'templates';
+let nodeEnv = process.env.NODE_ENV.toLowerCase();
+let hostingDir =  nodeEnv==='development' ? '' : '/natalie/farm';
+
+
+....................................
+/***** Router *****/
+app.get(`${hostingDir}/`,(req,res) => {
+    
+    let figureList = dataAr.map(obj => replaceTempl(figureTempl,obj)).join('');
+    res.send(homeTempl.replace('%*FIGURELIST*%',figureList))
+    
+})
+
+app.get('/product',(req,res) => {
+
+    res.send(`<h1>Our farm has the best meat 🥩</h1>`)
+    
+})
+
+// MISSION: create route to get /data and to send
+//    the whole dataJSON
+
+app.get('/data',(req,res) => {
+    
+    res.send(dataJSON);
+    
+})
+
+app.get('/carrot',(req,res) => {
+    
+    //res.send(dataAr[3]);
+    res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[3].productName)
+    .replaceAll('%*IMAGE*%',dataAr[3].image));
+    
+})
+
+app.get(`${hostingDir}/product/:id`,(req,res) => {
+    
+    console.log('req.params:\n',req.params)
+    let id = req.params.id;
+
+    0 <= id && id < dataAr.length ?
+        res.send(replaceTempl(productTempl, dataAr[id])) :
+        res.status(404).send(product404Templ);
+    /* res.send(productTempl.replaceAll('%*PRODUCTNAME*%',dataAr[req.params.id].productName)
+    .replaceAll('%*IMAGE*%',dataAr[req.params.id].image)); */
+    
+})
+/* app.get('/product/:id',(req,res) => {
+
+
+
+
+
+64. Add prefix of /natalie/farm to the favicon and "back" link
+in productTempl.html:
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Megrim|Nunito+Sans:400,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="%*HOSTINGDIR*%/icons/ear-of-maize_1f33d.png"
+    />
+
+    ................................................................
+
+    <div class="container">
+      <h1>🌽 Node Farm 🥦</h1>
+
+      <figure class="product">
+        <div class="product__organic %*NOTORGANIC*%"><h5>Organic</h5></div>
+        <a href="%*HOSTINGDIR*%/" class="product__back">
+          <span class="emoji-left">👈</span>Back
+        </a>
+
+65. Also add this prefix to the favicon 
+
+at homeTempl.html and 404ProductTempl.html 
+
+and to the link in figureTempl.html:
+
+    <a class="card__link" href="%*HOSTINGDIR*%/product/%*ID*%">
+      <span>Detail <i class="emoji-right">👉</i></span>
+    </a>
+  </figure>
+
+and to the "back" link in 404ProductTempl.html
+
+66. Add replace inside the module replace-templ.js:
+
+/** obj
+ * {
+    "id": 1,
+    "productName": "Goat and Sheep Cheese",
+    "image": "🧀",
+    "from": "Portugal",
+    "nutrients": "Vitamin A, Calcium",
+    "quantity": "250g",
+    "price": "5.00",
+    "organic": false,
+    "description": "Creamy and distinct in flavor, goat cheese is a dairy product enjoyed around the world. Goat cheese comes in a wide variety of flavors and textures, from soft and spreadable fresh cheese to salty, crumbly aged cheese. Although it’s made using the same coagulation and separation process as cheese made from cow’s milk, goat cheese differs in nutrient content."
+  }
+ */
+
+module.exports = function(templ, obj) {
+
+    /* return templ.replaceAll('%*PRODUCTNAME*%',obj.productName)
+                .replaceAll('%*IMAGE*%',obj.image)
+                .replaceAll('%*PRICE*%',obj.price)
+                .replaceAll('%*DESCRIPTION*%',obj.description)
+                ; */
+    let newStr = templ;
+    const entries = Object.entries(obj);
+    entries.forEach(entry => {
+
+      newStr = newStr.replaceAll(`%*${entry[0].toUpperCase()}*%`,entry[1])
+
+    })
+
+    newStr = newStr.replaceAll('%*NOTORGANIC*%',obj.organic ? '' : 'not-organic');
+
+    newStr = newStr.replaceAll('%*HOSTINGDIR*%',hostingDir)
+
+    return newStr;
+}
+
+67. The replace does not work , we should convert 
+the variable hostingDir into a global one:
+
+in farm.js:
+
+
+/***** Our Variables *****/
+let port = process.env.PORT ? process.env.PORT : 3051;
+
+let dataDir = 'data';
+let templDir = 'templates';
+let nodeEnv = process.env.NODE_ENV.toLowerCase();
+global.hostingDir =  nodeEnv==='development' ? '' : '/natalie/farm';
+
+
+68. Replace %*HOSTINGDIR*% in the files,
+
+that won't go through replace-templ module:
+
+in farm.js:
+
+/***** Reading the Files *****/
+let dataJSON = fs.readFileSync(path.join(__dirname,dataDir,'data.json'),'utf-8');
+const dataAr = JSON.parse(dataJSON);
+
+let productTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'productTempl.html'),'utf-8');
+let product404Templ = fs.readFileSync(
+    path.join(__dirname,templDir,'404ProductTempl.html'),'utf-8')
+       .replaceAll('%*HOSTINGDIR*%',hostingDir);
+let homeTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'homeTempl.html'),'utf-8')
+        .replaceAll('%*HOSTINGDIR*%',hostingDir);
+let figureTempl = fs.readFileSync(
+    path.join(__dirname,templDir,'figureTempl.html'),'utf-8');
+
+
+69. Add the prefix to the image SRC in data.json:
+
+  {
+    "id": 5,
+    "productName": "Smooth Mayonaise",
+    "image": "<img src='%*HOSTINGDIR*%/assets/img/organic-mayo.png' alt='organic mayo image' class='product-img'>",
+    "from": "Israel",
+    "nutrients": "Vitamin B, Vitamin D",
+    "quantity": "4 🥛",
+    "price": "4.50",
+    "organic": true,
+    "description": "Our mayonaise is the most tasty mayonaise in the world. And it is very dietetic."
+  },
+
+  70. Add one more middleware in farm.js
+  for the static files:
+
+  /***** MIDDLEWARE *****/
+app.use(express.static(path.join(__dirname,'public')));
+app.use('/natalie/farm',express.static(path.join(__dirname,'public')));
+
+71. Upload, perform the next deployment steps, 
+check the functionality - Mazal Tov!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**** Start NodeJS server on the hosting ***/
+
+1. NodeJS
+2. Create Application
+3. Fill the form (example in notes/DeployNodeJS01.png)
+4. Start 
+5. Stop
+6. NPM install
+7. Restart
+

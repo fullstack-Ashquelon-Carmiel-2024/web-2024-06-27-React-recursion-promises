@@ -1,0 +1,375 @@
+1. Just a couple of ajustments in CSS to make it 
+   less annoying:
+
+   TodoItem.css: (add padding-block: 0,
+   to make the "x" on the "delete" button to look
+   more centered)
+
+   button.delete {
+    font-size: 1.5rem;
+    background: red;
+    border: rgb(130, 12, 12);
+    border-radius: 2px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    padding-block: 0;
+   }
+
+  Header.css:
+  
+  remove margin-bottom and make the header to be 
+  above the list:
+
+  .header {
+    box-shadow: 5px 5px 5px 5px gray;
+    text-align: center;
+    padding: 2rem;
+    display: fixed;
+    z-index: 10;
+  }
+
+  index.css: add 
+
+  button {
+    cursor: pointer;
+  }
+
+2. It is something to make it look less annoying,
+   but also worse mentioning.
+
+   We've talked till now about 3 styling options:
+
+   - general CSS 
+   - component CSS 
+   - style object 
+
+   Let's use here style object inline. Not
+   the best practice, but the best practice in 
+   styling is anyway to be consistend and we're not,
+   as we want to show different options.
+
+   So, in App.js, for the left auxillary button:
+
+    <button onClick={changeColor}
+                style={{marginLeft: "2rem"}}>
+               Change Color
+    </button>
+
+    Important to pay attention that the first 
+    pair of brackets is for JS and the internal pair
+    is for object. Why do we have only one pair 
+    when we declare object outside?
+
+    Important to remind that the properties now 
+    are part of JS (they're properties of JS object),
+    so they're written not in CSS notation,
+    but in camel case. And the values are in quotes.
+
+    SMALL MISSION: add font-size = 1.8rem to 
+    this button and to the second button and
+    make this with the inline style object.
+
+    Now they looks like:
+
+    <button onClick={changeColor}
+                style={{marginLeft: "2rem",
+                        fontSize: "1.2rem"}}>
+               Change Color
+    </button>
+    <button onClick={changeTitle}
+            style={{fontSize: "1.2rem"}}>
+            Change Title
+    </button>
+
+3. We have not enough time yesterday, so we did not 
+   show that the array "todos" actually changes
+   and new render happens after it, so in App.jsx
+   let just add console.log(todos) before "return()"
+   and ensure that we see it changes.
+
+4. Let's in App.js write "removeTodo(id)" function.
+   We cannot just delete the appropriate element 
+   of the array "todos" (with splice(), for example),
+   WHY?
+
+   We should keep state immutable and prepare 
+   for setTodos() new array.
+
+   So, which function will create new array from the
+   old one, but without some element? Right, filter.
+
+    const removeTodo = (id) => {
+
+        const newTodos = todos.filter(todo => todo.id !== id);
+        setTodos(newTodos);
+
+    }
+
+5. MISSION: 
+    a) pass the function "removeTodo(id)" 
+   as a prop named "deleteTodo" to TodoList component 
+    b) get it there 
+    c) pass it forward to TodoItem 
+    d) get it there
+    e) use it in "onClick" of the "delete" button
+
+6. The results of the MISSION in App.jsx:
+
+    <TodoList importantColor={color} todos={todos}
+                    changeCompleted={changeCompleted}
+                    deleteTodo={removeTodo} />
+
+   In TodoList.jsx:
+
+    
+    export default function TodoList({todos,importantColor,
+                              changeCompleted, deleteTodo}) {
+    .....................................................
+        return (
+            <ul style={style.ul}>
+            {todos.map((todo,idx) => (
+                <TodoItem
+                key={todo.id}
+                todo={todo}
+                num={idx+1}
+                importantColor={importantColor}
+                changeCompleted={changeCompleted}
+                deleteTodo={deleteTodo}
+                />
+            ))}
+            </ul>
+        );
+        }
+
+   In TodoItem.jsx:
+
+   export default function TodoItem({ todo, num, importantColor,
+                            changeCompleted, deleteTodo }) {
+
+   ..................................................
+      <button className="delete"
+              onClick={() => {deleteTodo(id)}}>
+        &times;
+      </button>
+    </li>
+  
+7. Now we can delete todos! But when we delete them all 
+   the page looks as it could not load, so we should 
+   explain the user that everything is OK. 
+
+   In TodoList.jsx:
+
+  return (
+    <ul style={style.ul}>
+      {todos.length > 0 ? todos.map((todo,idx) => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          num={idx+1}
+          importantColor={importantColor}
+          changeCompleted={changeCompleted}
+          deleteTodo={deleteTodo}
+        />
+      ))  :
+      <h5>No more TODOs</h5>}
+    </ul>
+  );
+
+8. And fix margin in index.css:
+
+h5 {
+  margin: 2rem;
+}
+
+9. Let's look again inside TodoList.jsx:
+
+We could make "return()" may be cleaner and more readable. 
+Let's get the logic out of it:
+
+  let showTodos = todos.length > 0 ? todos.map((todo,idx) => (
+      <TodoItem key={todo.id} todo={todo} num={idx+1}
+        importantColor={importantColor}
+        changeCompleted={changeCompleted}
+        deleteTodo={deleteTodo}
+      />
+    ))  :
+    <h5>No more TODOs</h5>;
+
+  return (
+    <ul style={style.ul}>
+      {showTodos}
+    </ul>
+  );
+
+  What do you think?
+
+  OK. It's subjective.
+
+10. Till now we've created function inside App.jsx and passed it 2 layers.
+    But we've got other option: we could use "context". EXPLANATION
+
+    Let's create context for our app. There could be more than one context,
+    so we better create it inside some dir.
+
+    src/contexts/context.js:
+
+    import React from 'react';
+
+    // Context - is just a name of this context
+    const Context = React.createContext();
+
+    export default Context;
+
+11. In App.jsx we will envelope the whole application by the context:
+
+    For this we need import it:
+
+    import { useState } from "react";
+    import Context from './contexts/context';
+    import Header from "./components/header/Header";
+    import TodoList from "./components/todoList/TodoList";
+
+    And make it envelope:
+
+      return (
+    <Context.Provider >
+    <div className="App">
+      <Header appTitle={appTitle} />
+      <div className="wrapper" style={{ background: wrapperColor }}>
+        <button onClick={changeColor}
+                style={{marginLeft: "2rem",
+                        fontSize: "1.2rem"}}>
+               Change Color
+        </button>
+        <button onClick={changeTitle}
+                style={{fontSize: "1.2rem"}}>
+               Change Title
+        </button>
+        <TodoList importantColor={color} todos={todos}
+                  changeCompleted={changeCompleted}
+                  deleteTodo={removeTodo} />
+      </div>
+    </div>
+    </Context.Provider>
+  );
+
+12. Context.Provider shuld provide other layers of the
+application with values.
+Let's create some value to see how we use it:
+
+  function App() {
+    const [wrapperColor, setWrapperColor] = useState("white");
+    const [appTitle, setAppTitle] = useState("Todo App");
+
+    const color = "orange";
+    let comment = 'Just to show that we\'re using Context ...'; 
+
+  ................................................................................................................................
+
+    console.log(todos);
+
+    return (
+        <Context.Provider value={{comment:comment}}>
+        <div className="App">
+
+   The outer curly brackets are for JS,
+            the inner curly brackets are for the "value" object
+
+13. Let's skip the layer of TodoList between App and TodoItem 
+and jump directly from App to TodoItem:
+
+   This layer will use Context, so it'll be the Context consumer.
+
+   NEW HOOK: useContext 
+
+    import "./TodoItem.css";
+    import { useContext } from 'react';
+    import Context from '../../contexts/context';
+
+    export default function TodoItem({ todo, num, importantColor,
+                            changeCompleted, deleteTodo }) {
+
+        const { comment } = useContext(Context);
+        console.log(comment);
+
+14. Now let's pass the function removeTodo(id) through the Context too.
+
+   In App we add it to the Context.Provider
+   and remove it from the props of TodoList:
+
+     return (
+    <Context.Provider value={{comment:comment, removeTodo:removeTodo}}>
+    <div className="App">
+      <Header appTitle={appTitle} />
+      <div className="wrapper" style={{ background: wrapperColor }}>
+        <button onClick={changeColor}
+                style={{marginLeft: "2rem",
+                        fontSize: "1.2rem"}}>
+               Change Color
+        </button>
+        <button onClick={changeTitle}
+                style={{fontSize: "1.2rem"}}>
+               Change Title
+        </button>
+        <TodoList importantColor={color} todos={todos}
+                  changeCompleted={changeCompleted} />
+      </div>
+    </div>
+    </Context.Provider>
+  );
+
+15. Now we should not mention it in TodoList at all:
+
+export default function TodoList({todos,importantColor,
+                              changeCompleted}) {
+  const style = {
+    ul: {
+      listStyle: "none",
+      padding: "0",
+      fontSize: "2rem",
+      color: "black",
+    },
+  };
+
+  let showTodos = todos.length > 0 ? todos.map((todo,idx) => (
+      <TodoItem key={todo.id} todo={todo} num={idx+1}
+        importantColor={importantColor}
+        changeCompleted={changeCompleted}
+      />
+
+16. In TodoItem:
+
+We should not get it now as a prop, but as a value from the Context:
+
+export default function TodoItem({ todo, num, importantColor,
+                            changeCompleted }) {
+
+  const { comment, removeTodo } = useContext(Context);
+  console.log(comment);
+
+................................................................
+
+<button className="delete"
+              onClick={() => {removeTodo(id)}}>
+        &times;
+      </button>
+
+Let's ensure that everything still works.
+
+17. One last touch for this matter.
+    In the modern JS object notation if the name of the
+    property is the same as the name of the variable that
+    contains it value, we could shorten the notation.
+
+    In App, instead of 
+
+    <Context.Provider value={{comment:comment, removeTodo:removeTodo}}>
+
+    We could write:
+
+    <Context.Provider value={{comment, removeTodo}}>
+
+18. Still works!

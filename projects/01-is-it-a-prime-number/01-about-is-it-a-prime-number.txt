@@ -1,0 +1,52 @@
+The Project:
+----------------------------------------------------------------
+The User should enter some integer number >= 2
+(2 - is a first prime number) and should get response:
+ERROR input
+It is a prime number
+It is not a prime number
+
+HTML
+----------------------------------------------------------------
+Explanation - הסבר
+input (we could use "change" or "input" events)
+button - optional 
+DIV - for response
+error message place - optional
+
+Algorithm
+-----------------------------------------------------------
+- Get the value num
+- Validation
+- if it is 2 - it is a prime number
+- if (n%2 === 2) - it is not prime
+- 
+   for(let i = 3; i <= Math.sqrt(n); i += 2) {
+
+    if (n % i === 0) {
+        div.innerText = 'Not prime'
+        return
+    }
+
+   }
+
+Example: n = 121
+n === 2 - false
+n % 2 === 0 - false
+for() 
+    n % 3 === 0 - false (121 / 3 ~ 40)
+    n % 5 === 0 - false (121 / 5 ~ 24)
+    n % 7 === 0 - false (121 / 7 ~ 14)
+    n % 9 === 0 - false (121 / 9 ~ 13)
+    n % 11 === 0 - true (121 / 11 = 11)
+
+
+
+
+
+
+
+
+
+
+

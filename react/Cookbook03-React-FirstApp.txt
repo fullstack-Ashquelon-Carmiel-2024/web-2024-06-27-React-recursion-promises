@@ -1,0 +1,181 @@
+1. Install NodeJS, or check that you've got it installed:
+
+$ node -v 
+
+2.
+npm - node package manager
+      i) installs packages 
+      ii) runs scripts from package.json
+
+npx - node package executor
+      i) executes packages
+
+$ cd react
+
+(don't create "first-app" directory before)
+
+$ npx create-react-app first-app
+
+3. To start the app:
+   $ cd first-app
+   $ npm start
+
+4. Let's look inside "first-app" dir:
+
+   - public/index.html
+     
+     it's an entry point of the whole React app
+
+   - src/index.js
+
+     uses the entry point to inject the React App
+
+     Remove:
+
+     // If you want to start measuring performance in your app, pass a function
+    // to log results (for example: reportWebVitals(console.log))
+    // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+    reportWebVitals();
+
+    Remove also:
+
+     import reportWebVitals from './reportWebVitals';
+
+   - src/App.js
+
+        // 0. Everything here in React is written in JSX: combination
+        //    of HTML and JS
+        // 1. function App() creates component <App />, and it is generaly
+        //     like a class, so it's name starts with uppercase A
+        // 2. return () of the component contains the code that should be rendered
+        // 3. JS inside HTML should be in curly braces, like {logo}
+        // 4. <header className="App-header"> - in JSX we use attribute className
+        //        instead of attribute "class", to diminsh confusion between
+        //        group id of HTML or CSS and class of OO JS
+
+    Rename App.js to App.jsx
+
+    Empty it and leave only:
+
+      import './App.css';
+
+        function App() {
+
+        return (
+            <div className="App">
+            
+            </div>
+        );
+        }
+
+        export default App;
+
+   - src/App.css - clear it
+
+   Remove also 4 files from the dir "src":
+     App.test.js, logo.svg, reportWebVitals.js, setupTests.js
+
+5. We can use this first-app to create new React project just by copy 
+
+the directory first-app to the new project directory
+
+(without deleting node_modules - this option is great when the Internet is
+slow)
+
+6. Install VS Code extension:
+
+   ES7+ React/Redux/React-Native/JS snippets
+
+7. Create src/components
+
+8. Create src/components/tShirt/TShirt.css
+      and src/components/tShirt/TShirt.jsx
+
+   In jsx start to type react snippet "rfc" (react functional component)
+
+   and now we get:
+
+   import React from 'react'
+
+export default function TShirt() {
+  return (
+    <div>TShirt</div>
+  )
+}
+
+9. Save t-shirt picture in first-app/src/img
+
+10. Change TShirt.jsx to 
+
+import './TShirt.css';
+import tShirtImg from '../../img/t-shirt-blue.webp';
+
+export default function TShirt() {
+  return (
+    <figure className='tShirt'>
+        <img src={tShirtImg} alt="blue t-shirt" />
+        <h3>Blue T-Shirt</h3>
+        <p>price: 45 sheq</p>
+        <button>Add to the Cart</button>
+    </figure>
+  )
+}
+
+11. Use TShirt.css:
+
+.tShirt {
+
+    box-shadow: 5px 5px 5px 5px grey;
+    text-align: center;
+    padding: 2rem;
+
+}
+
+12. Import TShirt component and use it in App.jsx:
+
+import './App.css';
+import './components/tShirt/TShirt';
+import TShirt from './components/tShirt/TShirt';
+
+function App() {
+  // 0. Everything here in React is written in JSX: combination
+  //    of HTML and JS
+  // 1. function App() creates component <App />, and it is generaly
+  //     like a class, so it's name starts with uppercase A
+  // 2. return () of the component contains the code that should be rendered
+  // 3. JS inside HTML should be in curly braces, like {logo}
+  // 4. <header className="App-header"> - in JSX we use attribute className
+  //        instead of attribute "class", to diminsh confusion between
+  //        group id of HTML or CSS and class of OO JS
+
+  return (
+    <div className="App">
+      
+      {/* Slash as the "end" of the component is NEEDED */}
+       <TShirt />
+       <TShirt />
+       <TShirt />
+       <TShirt />
+       <TShirt />
+       <TShirt />
+
+    </div>
+  );
+}
+
+export default App;
+
+13. Add css in App.css too: 
+
+.App {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+14. Mazal tov! You've got your first React app.
+
+
+
+
+

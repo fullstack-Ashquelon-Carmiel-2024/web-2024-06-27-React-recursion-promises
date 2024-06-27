@@ -1,0 +1,78 @@
+Option to choose between the modes.
+Try to reuse the same function for different
+modes - possibly.
+
+Mode1: stupid machine - all the turns are random.
+       Don't go over 100!
+
+   HTML:
+        RULES
+
+        THE PLAYER choses who starts the game(<input type="radio"> or <select>)
+
+        OPTION to choose MAX number - should be ROUND!!! (<input type='number'>)
+
+        BUTTON "Start GAME" - should be locked 
+          during the game, and active when the game 
+          ends
+
+        INPUT - for the human turn
+
+        DIV which shows who's turn and what is the SUM 
+            after it
+
+        BUTTON for human to make a turn
+
+        Machine should "thiiiiink ...." 
+
+        VALIDATION
+
+        DIV with 100 sticks that fell randomly
+
+        DIV CONTAINER with position RELATIVE,
+         and inside 100 divs with position ABSOLUTE.
+         (in css give them the same class with 
+          the same width, height and box-shadow).
+         FOR LOOP
+         div.style.top = some random px
+         div.style.left = some random px
+
+         div.style.transform = 'rotate(random degrees)' 
+         
+
+   Mode2: smart machine - 
+
+         Option1: HUMAN chouses to be FIRST,
+
+              <Start Game>
+
+              Enters number, for example, 3
+
+              <Finish the Turn>
+
+              GLOBAL VARIABLE for the SUM
+
+              function machineTurn() {
+
+                let numToAdd = 10 - SUM % 10;
+
+                if numToAdd is ten -> 
+                   choose randomly from 1 to 9 
+
+              }
+
+  Mode3 - OPTIONAL: The player is allowed to choose 
+         the MAX number (not necessarily round),
+         and till what number we could add to the SUM.
+
+
+          You should invent the formula 
+          for the winning strategy.
+
+
+Mode4 - OPTIONAL: Like the original rules -
+        to play with 2 heaps of sticks or rocks.
+
+        (Check the rules in Wikipedy)
+
+

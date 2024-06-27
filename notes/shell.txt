@@ -1,0 +1,148 @@
+natal@LAPTOP-NATALIE MINGW64 ~/Desktop/b/Courses/IITC/FullStack_2024_03_20_Ashquelon_Carmiel/course/Web-2024-05-01-onclick-setTimeout-random (main)
+$ - prompt, now is my turn to command
+
+~ - home directory
+
+$ cd - change directory
+$ cd <Enter>  - go to home directory
+$ cd -        - go to the previeous directory
+$ cd <dir>  - goes to the dir
+
+
+$ ls - "list", shows the list of the files
+
+$ clear - clears the terminal
+
+&& - adds commands together
+Arrow Up and Arrow Down - shows the command history
+
+Ctrl-C - stops almoust each running process
+
+$ env - general environment variables
+$ export PORT=3002  - created environment variable PORT
+## No spaces around =
+
+$ echo $PORT - shows the value of PORT variable
+-------------------------------------
+HOW DO WE USE A GITHUB LINK TO THE CURRENT LESSON
+-------------------------------------
+$ cd to the course directory
+
+$ git clone https://github.com/fullstack-Ashquelon-Carmiel-2024/Web-2024-05-01-onclick-setTimeout-random.git
+- clones somebody's directory from github
+
+$ cd Web-2024-05-01-onclick-setTimeout-random
+- now we are in the cloned directory and we see (main)
+
+$ ls - "list", we see the contents
+
+$ git pull - gets the updated code 
+
+($ git fetch - shows if github version is different from you version      )
+
+$ git log - shows all the commits
+
+_____________________________________-
+
+upload changes from my local directory to my github
+remote directory
+
+$ git status - check that there were some changes - red
+$ git add .
+or
+$ git add *
+or
+$ git add -A
+
+   - add all the changes to the local repository
+
+$ git status - shows the changes to commit in green
+
+$ git commit -m "added random and canvas-breakout-game"
+
+$ git status - everything is white, could "push" 
+$ git log - see all the commits
+
+$ git push
+
+----------------------------------
+path
+----------------------------------
+. - the same directory
+./ - to get a file in the same directory
+.. - parent directory
+
+--------------------------------------------------
+How to create repository on GitHUB for my own proj10
+--------------------------------------------------
+$ cd proj10
+
+$ ls
+// shows all the files (including directories)
+
+$ ls -a
+// shows all the files including the hidden files
+// like .gitignore and .git/
+
+$ rm -rf .git
+// rm - remove
+// -r - recursive (for removing directories)
+// -f - force (don't ask any questions)
+// * - all - DON'T DO IT
+// rm -rf .git - the result is that current 
+//              directory is not a git repository
+
+NOW WE ARE THE BLANK PAGE
+
+$ git init
+// initialize git repository
+// Now we're in a git repository branch (master)
+
+$ git status
+// check what's the status of the files in our 
+// git repository
+
+$ git add *
+or
+$ git add .
+// add all the files to the repository,
+// so git will track them
+
+$ git commit -m"first commit"
+// save the files with the message "first commit"
+
+$ git log 
+// shows the commit history 
+
+// on our local PC the main git branch gets
+// name "master" by default, but on GitHub 
+// the name of the main branch is "main"
+$ git branch -m main
+// change the name of our local branch to "main"
+
+-- Go to the GitHub account 
+-- Create new repository
+-- Copy the LINK
+
+$ git remote add origin https://github.com/fullstack-Ashquelon-Carmiel-2024/proj10.git
+// Connect the local directory to the remote repository
+
+$ git push -u origin main
+// add all the files to the remote origin for the first time
+
+--- AFTER CHANGES WERE PERFORMED
+
+$ git add *
+// add all the changes to the STAGE
+
+$ git commit -m"shell.txt changed"
+// commit all the changes 
+
+$ git push 
+// bring all the changes to the remote repository
+
+
+
+
+
+

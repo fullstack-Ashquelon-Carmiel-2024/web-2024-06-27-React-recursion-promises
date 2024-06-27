@@ -1,0 +1,68 @@
+<%- include('partials/header.ejs') %>
+<div class="container">
+    <% if (message) { %>
+        <p class="text-center text-danger"><%= message %></p>
+    <% } %>
+
+    <% if (food) { %>
+        <form class="add-food-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="food-name">Food Name</label>
+                    <input type="text" class="form-control" name="foodName" id="food-name" value="<%= food.name %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="kosher-type">Kosher Type</label>
+                    <select class="form-control" name="kosherType" id="kosher-type">
+                        <option value="" <% if (!food.kosher_type) { %> selected <% } %> >-- Choose Kosher Type --</option>
+                        <option value="parve" <% if (food.kosher_type==="parve") { %> selected <% } %>>Parve</option>
+                        <option value="milk" <% if (food.kosher_type==="milk") { %> selected <% } %>>Milk</option>
+                        <option value="meat" <% if (food.kosher_type==="meat") { %> selected <% } %>>Meat</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="cuisine">Cuisine</label>
+                    <select class="form-control" name="cuisine" id="cuisine" required>
+                        <option disabled>-- Choose Cuisine --</option>
+                        <% cuisines.forEach((cuisine, index) => { %>
+                            <option value="<%= cuisine.id %>" <% if (food.cuisine_id===cuisine.id) { %> selected <% } %>><%= cuisine.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="calories">Calories</label>
+                    <input type="number" class="form-control" name="calories" id="calories" placeholder="Calories"  value="<%= food.calories %>">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="prepare-time-min">Prepare Time, min</label>
+                    <input type="number" class="form-control" name="prepareTimeMin" id="prepare-time-min"  value="<%= food.prepare_time_min %>" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="ingredients">Ingredients</label>
+                    <textarea class="form-control" name="ingredients" id="ingredients" required>
+                        <%= food.ingredients %>
+                    </textarea>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="type-of-dish">Type of Dish</label>
+                    <select id="type-of-dish" name="typeOfDish" class="form-control">
+                        <option value="" <% if (!food.type_of_dish) { %> selected <% } %>>-- Choose Type of Dish --</option>
+                        <option value="dessert" <% if (food.type_of_dish==="dessert") { %> selected <% } %>>Dessert</option>
+                        <option value="soup" <% if (food.type_of_dish==="soup") { %> selected <% } %>>Soup</option>
+                        <option value="main" <% if (food.type_of_dish==="main") { %> selected <% } %>>Main</option>
+                        <option value="side dish" <% if (food.type_of_dish==="side dish") { %> selected <% } %>>Side Dish</option>
+                        <option value="drink" <% if (food.type_of_dish==="drink") { %> selected <% } %>>Drink</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success float-right">Update Food</button>
+        </form>
+    <% } else { %>
+        <p class="text-center">Food Not Found. Go <a href="/add">here</a> to add foods.</p>
+    <% } %>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1693 @@
+1. For now we've got installations of NodeJS 
+   and of "nodemon" 
+
+   To check, run:
+
+   $ node -v 
+     v18.20.0
+   $ nodemon -v
+    3.1.0
+
+2. Install MySQL server+client:
+
+or XAMPP
+or MySQL Workbench Community Edition
+
+3. Start MySQL server up:
+
+In XAMPP option:
+
+     Windows -> XAMPP Control Panel -> Apache START ->
+       MySQL START -> MySQL Admin -> Opens PHPMyAdmin Client
+
+4. Get to the directory of the project, initiate it, and 
+install several modules:
+
+$ cd yummy
+
+$ npm init 
+
+$ npm i express mysql2 ejs
+
+5. yummy/db/create-db.sql:
+
+CREATE DATABASE yummy 
+COLLATE = 'utf8mb4_general_ci';
+
+Now run it in SQL interface and create the database.
+
+6. yummy/yummy.js:
+
+const express = require('express');
+const mysql = require('mysql2');
+require('ejs');
+
+/********** VARIABLES **********/
+let port = process.env.PORT ? process.env.PORT : 3053;
+
+/***** CREATE THE SERVER ******/
+const app = express();
+
+/******* ROUTING *********/
+app.get('/',(req,res) => {
+
+    res.send('<h1>🧁🥑The YUMMIEST APP of all🍐</h1>')
+
+})
+
+/*********LISTENER *********/
+app.listen(port, () => {
+
+    console.log(`Listening on the port ${port}`)
+
+})
+
+7. package.json:
+
+{
+  "name": "yummy",
+  "version": "1.0.0",
+  "description": "MVC NodeJS Express + ejs + MySQL project",
+  "main": "yummy.js",
+  "scripts": {
+    "start": "nodemon yummy.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mysql2": "^3.10.0"
+  }
+}
+
+8. $ npm start 
+
+9. yummy/yummy.js: Create the object of DB connection and
+connect to the DB:
+
+const express = require('express');
+const mysql = require('mysql2');
+require('ejs');
+
+/********** VARIABLES **********/
+let port = process.env.PORT ? process.env.PORT : 3053;
+
+/*********** DB CONNECTION **********/
+const db = mysql.createConnection({
+    host: 'localhost', // or '127.0.0.1'
+    port: 3306,
+    database: 'yummy',
+    user: 'root', // TBD: create new, less powerful user
+    password: ''
+})
+
+db.connect(err => {
+
+    if (err) {
+        // Connection to DB is critical for our app,
+        // so if it has failed, we should treat it 
+        // and not start the server
+        throw(err)
+    }
+
+    console.log('I fill lucky today. I\'ve connected to DB!!!');
+
+})
+
+/***** CREATE THE SERVER ******/
+const app = express();
+
+/******* ROUTING *********/
+app.get('/',(req,res) => {
+
+    res.send('<h1>🧁🥑The YUMMIEST APP of all🍐</h1>')
+
+})
+
+/*********LISTENER *********/
+app.listen(port, () => {
+
+    console.log(`Listening on the port ${port}`)
+
+})
+
+10. Create script for the table 'food':
+
+yummy/db/food.sql:
+
+USE yummy;
+
+DROP TABLE IF EXISTS food;
+
+CREATE TABLE food (
+    id SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL UNIQUE KEY,
+    kosher_type CHAR(5) NULL, -- MILK,MEAT,PARVE
+    cuisine_id TINYINT NOT NULL,
+    image VARCHAR(250) NOT NULL,
+    calories SMALLINT NULL,
+    prepare_time_min SMALLINT NOT NULL, 
+    ingredients VARCHAR(300) NOT NULL,
+    type_of_dish VARCHAR(15) NULL -- DESSERT,SOUP,MAIN,SIDE DISH,DRINK
+);
+
+/**
+1byte = 8bits
+00000000
+2^8 = 256 (0-255)
+*/
+
+INSERT INTO food (name,kosher_type,cuisine_id,
+    image, calories, prepare_time_min, 
+    ingredients,  type_of_dish)
+VALUES ('chumus masbacha','parve',1,'chummus-masbacha.jpg',
+    550,120,'chumus, tchina, oil','main'),
+ ('sushi','parve',2,'sushi.jpeg',
+    250,90,'rice, nuri, avocado','main'),
+ ('pavlova','milk',3,'pavlova.jpg',
+    330,180,'eggs, whipped cream , crunberry',
+    'dessert'),
+ ('kube selek','meat',4,'kube-selek.jpeg',
+    370, 180,'beetroot, meat, semolina',
+    'main');
+
+11. Create script for the table 'cuisine':
+
+yummy/db/cuisine.sql:
+
+USE yummy;
+
+DROP TABLE IF EXISTS cuisine;
+
+CREATE TABLE cuisine (
+    id TINYINT NOT NULL PRIMARY KEY,
+    name VARCHAR(60) NOT NULL UNIQUE KEY,
+    continent VARCHAR(15) NOT NULL,
+    flag VARCHAR(250) NULL,
+    description VARCHAR(500) NULL
+);
+
+INSERT INTO cuisine (id,name,continent)
+VALUES (1, 'Israeli','Asia'),
+ (2, 'Japanese','Asia'),
+ (3, 'Australian','Australia'),
+ (4, 'Iraqi','Asia'),
+ (5, 'French','Europe');
+
+
+12. MVC - model, view, controller
+
+Model - entities, db, interacting with DB
+
+View - the visual part, what we see in the 
+       browser (templates or HTML)
+
+Controller - connects between the model 
+             and the view
+
+13. Add to the server yummy.js
+
+"path" module and Express variables for ejs
+
+templating enjine:
+
+const express = require('express');
+const mysql = require('mysql2');
+const path = require('path');
+require('ejs');
+
+/********** VARIABLES **********/
+let port = process.env.PORT ? process.env.PORT : 3053;
+
+/*********** DB CONNECTION **********/
+const db = mysql.createConnection({
+    host: 'localhost', // or '127.0.0.1'
+    port: 3306,
+    database: 'yummy',
+    user: 'root', // TBD: create new, less powerful user
+    password: ''
+})
+
+db.connect(err => {
+
+    if (err) {
+        // Connection to DB is critical for our app,
+        // so if it has failed, we should treat it 
+        // and not start the server
+        throw(err)
+    }
+
+    console.log('I fill lucky today. I\'ve connected to DB!!!');
+
+})
+
+/***** CREATE THE SERVER ******/
+const app = express();
+
+/***** VARIABLES OF EXPRESS ******/
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname,'views'));
+
+/******* ROUTING *********/
+app.get('/',(req,res) => {
+
+    res.send('<h1>🧁🥑The YUMMIEST APP of all🍐</h1>')
+
+})
+
+/*********LISTENER *********/
+app.listen(port, () => {
+
+    console.log(`Listening on the port ${port}`)
+
+})
+
+14. Change the template yummy/views/partials/header.ejs 
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="/assets/css/custom.css">-->
+    <title><%= title %></title>
+</head>
+<style>
+    .table-wrapper {
+        margin-top: 50px;
+    }
+
+    .player-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .add-player-form {
+        margin-top: 50px;
+    }
+</style>
+<body>
+<div class="page-wrapper">
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1" ><a href="/">Yummy</a></span>
+        <a class="float-right" href="/add" title="Add a New Food">Add a Food</a>
+    </nav>
+
+15. Create small template from index.ejs:
+small-index.ejs:
+
+<%- include('partials/header.ejs') %>
+    <div class="table-wrapper">
+        
+        <h2>Yummy!!!</h2>
+
+    </div>
+</div>
+</body>
+</html>
+
+16. yummy/modele/home.js:
+
+module.exports = function (req,res) {
+
+    res.render('small-index.ejs',
+      {title: 'Yummy'})
+
+}
+
+17. In the server, import it
+and use for app.get('/'):
+
+yummy/yummy.js:
+
+const express = require('express');
+const mysql = require('mysql2');
+const path = require('path');
+require('ejs');
+
+const getHomePage = require('./model/home');
+
+/********** VARIABLES **********/
+let port = process.env.PORT ? process.env.PORT : 3053;
+
+/*********** DB CONNECTION **********/
+const db = mysql.createConnection({
+    host: 'localhost', // or '127.0.0.1'
+    port: 3306,
+    database: 'yummy',
+    user: 'root', // TBD: create new, less powerful user
+    password: ''
+})
+
+db.connect(err => {
+
+    if (err) {
+        // Connection to DB is critical for our app,
+        // so if it has failed, we should treat it 
+        // and not start the server
+        throw(err)
+    }
+
+    console.log('I fill lucky today. I\'ve connected to DB!!!');
+
+})
+
+/***** CREATE THE SERVER ******/
+const app = express();
+
+/***** VARIABLES OF EXPRESS ******/
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname,'views'));
+
+/******* ROUTING *********/
+app.get('/',getHomePage);
+
+/*********LISTENER *********/
+app.listen(port, () => {
+
+    console.log(`Listening on the port ${port}`)
+
+})
+
+18. Change module.exports in modele/home.js 
+to enable it to be comprised  of several named
+functions:
+
+module.exports = {
+  
+  getSmallHomePage: (req,res) => {
+
+    res.render('small-index.ejs',
+      {title: 'Yummy'})
+
+  }
+
+}
+
+19. Create getSampleHomePage function inside model/home.js
+
+with sample data:
+
+module.exports = {
+  
+  getSampleHomePage: (req,res) => {
+
+    res.render('index.ejs',
+      {title: 'Yummy',
+       food: [ 
+        {
+         id: 1,
+         name: 'chumus masbacha',
+         kosher_type: 'parve',
+         cuisine_id: 1,
+         image: 'chummus-masbacha.jpg', 
+         calories: 550, 
+         prepare_time_min: 120, 
+         ingredients: 'chumus, tchina, oil',  
+         type_of_dish: 'main'
+        },
+        {
+         id: 2,
+         name: 'sushi',
+         kosher_type: 'parve',
+         cuisine_id: 2,
+         image: 'sushi.jpeg',
+         calories: 250, 
+         prepare_time_min: 90, 
+         ingredients: 'rice, nuri, avocado',  
+         type_of_dish: 'main'
+        }
+       ]
+      })
+
+  },
+
+  getSmallHomePage: (req,res) => {
+
+    res.render('small-index.ejs',
+      {title: 'Yummy'})
+
+  }
+
+}
+
+20. In yummy.js use the new function:
+
+/******* ROUTING *********/
+// GET - HTTP method, that asks to bring some
+// data or page, sometimes, in accordance to parameters
+app.get('/',home.getSampleHomePage);
+
+21. Now change the template views/index.ejs
+to get the right data:
+
+<%- include('partials/header.ejs') %>
+    <div class="table-wrapper">
+        <% if (food.length > 0) {%>
+            <table class="table table-hovered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Kosher Type</th>
+                        <th scope="col">Cuisine Id</th>
+                        <th scope="col">Calories</th>
+                        <th scope="col">Prepare Time</th>
+                        <th scope="col">Ingredients</th>
+                        <th scope="col">Type of Dish</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% food.forEach((yum, index) => { %>
+                        <tr>
+                            <th scope="row"><%= yum.id %></th>
+                            <td><img src="/assets/img/<%= yum.image %>" class="rounded-circle food-img" alt=""></td>
+                            <td><%= yum.name %></td>
+                            <td><%= yum.kosher_type %></td>
+                            <td><%= yum.cuisine_id %></td>
+                            <td><%= yum.calories %>kcal</td>
+                            <td><%= yum.prepare_time_min %>min</td>
+                            <td><%= yum.ingredients %></td>
+                            <td><%= yum.type_of_dish %></td>
+                            <td>
+                                <a href="/edit/<%= yum.id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                <a href="/delete/<%= yum.id %>" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="text-center">No food found. Go <a href="/add" >here</a> to add food.</p>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>
+
+
+22. Create directory yummy/static/assets/img
+    and put there images of the foods that are already 
+    in the DB:
+    chummus-masbacha.jpg
+    kupbe-selek.jpeg
+    pavlova.jpg
+    sushi.jpeg
+
+23. Add middleware to get the static files to yummy.js:
+
+/***** VARIABLES OF EXPRESS ******/
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname,'views'));
+
+/******* MIDDLEWARE *********/
+app.use(express.static(path.join(__dirname,'static')));
+
+/******* ROUTING *********/
+
+24. Create function getHomePage in home.js,
+for now it brings the empty array food:[],
+
+so we should not see any rows
+
+module.exports = {
+
+  getHomePage: (req,res) => {
+
+    res.render('index.ejs', {
+      title: 'Yummy',
+      food: []
+    })
+
+  },
+  
+  getSampleHomePage: (req,res) => {
+
+    res.render('index.ejs',
+      {title: 'Yummy',
+       food: [ 
+        {
+         id: 1,
+         name: 'chumus masbacha',
+         kosher_type: 'parve',
+         cuisine_id: 1,
+         image: 'chummus-masbacha.jpg', 
+         calories: 550, 
+         prepare_time_min: 120, 
+         ingredients: 'chumus, tchina, oil',  
+         type_of_dish: 'main'
+        },
+        {
+         id: 2,
+         name: 'sushi',
+         kosher_type: 'parve',
+         cuisine_id: 2,
+         image: 'sushi.jpeg',
+         calories: 250, 
+         prepare_time_min: 90, 
+         ingredients: 'rice, nuri, avocado',  
+         type_of_dish: 'main'
+        }
+       ]
+      })
+
+  },
+
+  getSmallHomePage: (req,res) => {
+
+    res.render('small-index.ejs',
+      {title: 'Yummy'})
+
+  }
+
+}
+
+25. In yummy.js we use now getHomePage:
+
+/******* MIDDLEWARE *********/
+app.use(express.static(path.join(__dirname,'static')));
+
+/******* ROUTING *********/
+// GET - HTTP method, that asks to bring some
+// data or page, sometimes, in accordance to parameters
+app.get('/',home.getHomePage);
+
+/*********LISTENER *********/
+
+26. Make the object of db connection global (yummy.js):
+db.connect(err => {
+
+    if (err) {
+        // Connection to DB is critical for our app,
+        // so if it has failed, we should treat it 
+        // and not start the server
+        throw(err)
+    }
+
+    console.log('I fill lucky today. I\'ve connected to DB!!!');
+
+})
+
+global.db = db;
+
+/***** CREATE THE SERVER ******/
+const app = express();
+
+27. model/home.js:
+
+(get data from yummy.food):
+
+module.exports = {
+
+  getHomePage: (req,res) => {
+
+    let querySQL = 'SELECT * FROM food';
+
+    db.query(querySQL,(err, result) => {
+
+      if (err) {
+
+        console.log(err.message);
+        return res.status(500).send(`<h1>ERROR: ${err.message} \n
+             while performing \n
+             ${querySQL}</h1>`);
+
+      }
+
+      // Controller (we've got it here close to the Model)
+      res.render('index.ejs', {
+        title: 'Yummy',
+        food: result
+      })
+
+    })
+
+  },
+  
+  getSampleHomePage: (req,res) => {
+
+    res.render('index.ejs',
+      {title: 'Yummy',
+       food: [ 
+        {
+         id: 1,
+         name: 'chumus masbacha',
+         kosher_type: 'parve',
+         cuisine_id: 1,
+         image: 'chummus-masbacha.jpg', 
+         calories: 550, 
+         prepare_time_min: 120, 
+         ingredients: 'chumus, tchina, oil',  
+         type_of_dish: 'main'
+        },
+        {
+         id: 2,
+         name: 'sushi',
+         kosher_type: 'parve',
+         cuisine_id: 2,
+         image: 'sushi.jpeg',
+         calories: 250, 
+         prepare_time_min: 90, 
+         ingredients: 'rice, nuri, avocado',  
+         type_of_dish: 'main'
+        }
+       ]
+      })
+
+  },
+
+  getSmallHomePage: (req,res) => {
+
+    res.render('small-index.ejs',
+      {title: 'Yummy'})
+
+  }
+
+}
+
+28. Rename views/add-player.ejs to views/add-food.ejs
+    and view/edit-player.ejs to view/edit-food.ejs
+
+29. Edit add-food.ejs - replace "player" by "food":
+
+<%- include('partials/header.ejs') %>
+    <div class="container">
+        <% if (message != '') { %>
+            <p class="text-center text-danger"><%= message %></p>
+        <% } %>
+        <form class="add-food-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="first_name" id="first-name" placeholder="First Name" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="last_name" id="last-name" placeholder="Last Name" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="number" class="form-control" name="number" id="number" placeholder="Number" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <select id="position" name="position" class="form-control" required>
+                        <option selected disabled>Choose position</option>
+                        <option>Goalkeeper</option>
+                        <option>Defender</option>
+                        <option>Midfielder</option>
+                        <option>Forward</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="food-img"><b>Food Image</b></label><br>
+                    <input type="file" name="image" id="food-img" class="" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">Add Food</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+30. Create yummy/model/food.js
+
+module.exports = {
+
+    getAddPage: (req, res) => {
+
+        res.render('add-food.ejs', {
+            title: 'Add | Yummy',
+            message: ''
+        })
+
+    }
+
+}
+
+31. Import it into yummy.js and add to the routing:
+
+const express = require('express');
+const mysql = require('mysql2');
+const path = require('path');
+require('ejs');
+const fs = require('fs');
+
+const home = require('./model/home');
+const food = require('./model/food');
+
+/********** VARIABLES **********/
+
+..................................
+
+
+/******* ROUTING *********/
+// GET - HTTP method, that asks to bring some
+// data or page, sometimes, in accordance to parameters
+app.get('/',home.getHomePage);
+
+app.get('/add',food.getAddPage);
+
+31. Edit add-food.ejs to make it to contain all the needed fields.
+
+<%- include('partials/header.ejs') %>
+    <div class="container">
+        <% if (message != '') { %>
+            <p class="text-center text-danger"><%= message %></p>
+        <% } %>
+        <form class="add-food-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="foodName" id="food-name" placeholder="Food Name" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="form-control" name="kosherType" id="kosher-type">
+                        <option selected disabled>-- Choose Kosher Type --</option>
+                        <option value="parve">Parve</option>
+                        <option value="milk">Milk</option>
+                        <option value="meat">Meat</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="form-control" name="cuisine" id="cuisine" required>
+                        <option selected disabled>-- Choose Cuisine --</option>
+                        <option value="israeli">Israeli</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="number" class="form-control" name="calories" id="calories" placeholder="Calories">
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="number" class="form-control" name="prepareTimeMin" id="prepare-time-min" placeholder="Prepare Time, min" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <textarea class="form-control" name="ingredients" id="ingredients" required>
+                        Ingredients
+                    </textarea>
+                </div>
+                <div class="form-group col-md-3">
+                    <select id="type-of-dish" name="typeOfDish" class="form-control">
+                        <option selected disabled>-- Choose Type of Dish --</option>
+                        <option value="dessert">Dessert</option>
+                        <option value="soup">Soup</option>
+                        <option value="main">Main</option>
+                        <option value="side dish">Side Dish</option>
+                        <option value="drink">Drink</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="food-img"><b>Food Image</b></label><br>
+                    <input type="file" name="image" id="food-img" class="" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">Add Food</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+32. create new module: yummy/model/cuisine.js:
+
+module.exports = {
+
+    // Get the list of cuisines with their id
+    getCuisineList: (callback) => {
+
+        let querySQL = 'SELECT id, name FROM cuisine';
+
+        db.query(querySQL,(err,result) => {
+
+            if (err) {
+                console.log(err.message);
+                callback(err,[]);
+                return;
+            }
+
+            callback(err,result);
+
+        })
+
+    }
+
+
+}
+
+33. Use the above function to get the list of all the cuisines and their id
+for presenting them in <select> in the form of "Add Food":
+yummy/model/food.js:
+
+const cuisine = require('./cuisine');
+
+module.exports = {
+
+    getAddPage: (req, res) => {
+
+        cuisine.getCuisineList((err,result) => {
+
+            if (err) {
+                return res.status(500).send(err.message);
+            }
+
+            res.render('add-food.ejs', {
+                title: 'Add | Yummy',
+                message: '',
+                cuisines: result
+            })
+
+        })
+
+    }
+
+}
+
+34. Add <option>s to the <select> in the template add-food.ejs:
+
+<%- include('partials/header.ejs') %>
+    <div class="container">
+        <% if (message != '') { %>
+            <p class="text-center text-danger"><%= message %></p>
+        <% } %>
+        <form class="add-food-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="foodName" id="food-name" placeholder="Food Name" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="form-control" name="kosherType" id="kosher-type">
+                        <option selected disabled>-- Choose Kosher Type --</option>
+                        <option value="parve">Parve</option>
+                        <option value="milk">Milk</option>
+                        <option value="meat">Meat</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="form-control" name="cuisine" id="cuisine" required>
+                        <option selected disabled>-- Choose Cuisine --</option>
+                        <% cuisines.forEach((cuisine, index) => { %>
+                            <option value="<%= cuisine.id %>"><%= cuisine.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="number" class="form-control" name="calories" id="calories" placeholder="Calories">
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="number" class="form-control" name="prepareTimeMin" id="prepare-time-min" placeholder="Prepare Time, min" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <textarea class="form-control" name="ingredients" id="ingredients" required>
+                        Ingredients
+                    </textarea>
+                </div>
+                <div class="form-group col-md-3">
+                    <select id="type-of-dish" name="typeOfDish" class="form-control">
+                        <option selected disabled>-- Choose Type of Dish --</option>
+                        <option value="dessert">Dessert</option>
+                        <option value="soup">Soup</option>
+                        <option value="main">Main</option>
+                        <option value="side dish">Side Dish</option>
+                        <option value="drink">Drink</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="food-img"><b>Food Image</b></label><br>
+                    <input type="file" name="image" id="food-img" class="" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">Add Food</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+35. Check now that you see the <select> with all it's <option>s
+
+36. Add to food.js function for adding food data:
+
+    },
+
+    addFood: (req, res) => {
+
+        console.log(req.body)
+        res.send('<h1>End of "addFood"</h1>')
+
+    }
+
+37. Add routing for POST request
+(GET - get some data and show in the browser 
+        it uses req.url and req.params,
+POST - asks to add some data to the server,
+       uses req.url, req.params and req.body
+       
+       Classic usage of POST - for submitting form data)
+in yummy.js:
+
+/******* ROUTING *********/
+// GET - HTTP method, that asks to bring some
+// data or page, sometimes, in accordance to parameters
+app.get('/',home.getHomePage);
+
+app.get('/add',food.getAddPage);
+app.post('/add',food.addFood);
+
+38. In another window of GIT BUSH install
+the package for uploading files:
+
+$ npm i express-fileupload
+
+39. Import it in yummy.js:
+
+const fileUpload = require('express-fileupload');
+
+40. Add to middleware (in yummy.js):
+
+
+/******* MIDDLEWARE *********/
+app.use(express.static(path.join(__dirname,'static')));
+
+app.use(express.urlencoded({extended:true})); // if we've got form data, converts it to json
+app.use(express.json());// converts json into object
+
+app.use(fileUpload());
+
+/******* ROUTING *********/
+
+41. In yummy.js use CHOICE OPERATOR || :
+
+const express = require('express');
+const mysql = require('mysql2');
+const path = require('path');
+require('ejs');
+const fileUpload = require('express-fileupload');
+
+const home = require('./model/home');
+const food = require('./model/food');
+
+/********** VARIABLES **********/
+// CHOICE OPERATOR || - if we've got a value we use it, if not we want it to be 3053
+let port = process.env.PORT || 3053;
+
+42. In food.js in the function addFood we've got all the data 
+from the form, the file and checked the file extension:
+
+    addFood: (req, res) => {
+
+        console.log(req.body)
+
+        // Check if there was smth wrong while uploading the file
+        // If it was, change the "message" property of the current module
+        // and show the "add food" page again (with the message)
+        if (!req.files) {
+
+            module.exports.message = 'No file was uploaded';
+            return res.redirect('/add');
+
+        }
+
+        let foodName = req.body.foodName;
+        let cuisineId = +req.body.cuisine;
+        let calories = req.body.calories ? +req.body.calories : null;
+        let prepareTimeMin = +req.body.prepareTimeMin;
+        let ingredients = req.body.ingredients;
+        // CHOICE OPERATOR || - if we've got a value we use it, if not we want it to be "null"
+        let typeOfDish = req.body.typeOfDish || null;
+        let kosherType = req.body.kosherType || null;
+
+        // req.files.image - because in the upload field
+        //                   there is name="image"
+        let image = req.files.image;
+
+        // Show some file metadata:
+        // console.log(`image.name: ${image.name}`)
+        // console.log(`image.mimetype: ${image.mimetype}`)
+        /* image.name: sabich.jpg
+            image.mimetype: image/jpeg
+            */
+
+        let extension = image.mimetype.split('/')[1];
+
+        if (!/^(gif|heic|jpeg|jpg|png|svg|webp)$/.test(extension)) {
+
+            module.exports.message = `Wrong file extension: ${extension}`;
+            return res.redirect('/add');
+
+        }
+
+        res.send('<h1>End of "addFood"</h1>')
+
+    }
+
+43. food.js:
+addFood function is finished (with t.b.d):
+
+const cuisine = require('./cuisine');
+
+module.exports = {
+
+    message: '',
+
+    getAddPage: (req, res) => {
+
+        cuisine.getCuisineList((err,result) => {
+
+            if (err) {
+                return res.status(500).send(err.message);
+            }
+
+            res.render('add-food.ejs', {
+                title: 'Add | Yummy',
+                message: module.exports.message,
+                cuisines: result
+            })
+
+        })
+
+    },
+
+    addFood: (req, res) => {
+
+        console.log(req.body)
+
+        // Check if there was smth wrong while uploading the file
+        // If it was, change the "message" property of the current module
+        // and show the "add food" page again (with the message)
+        if (!req.files) {
+
+            module.exports.message = 'No file was uploaded';
+            return res.redirect('/add');
+
+        }
+
+        let foodName = req.body.foodName;
+        let cuisineId = +req.body.cuisine;
+        let calories = req.body.calories ? +req.body.calories : null;
+        let prepareTimeMin = +req.body.prepareTimeMin;
+        let ingredients = req.body.ingredients;
+        // CHOICE OPERATOR || - if we've got a value we use it, if not we want it to be "null"
+        let typeOfDish = req.body.typeOfDish || null;
+        let kosherType = req.body.kosherType || null;
+
+        // req.files.image - because in the upload field
+        //                   there is name="image"
+        let image = req.files.image;
+
+        // Show some file metadata:
+        // console.log(`image.name: ${image.name}`)
+        // console.log(`image.mimetype: ${image.mimetype}`)
+        /* image.name: sabich.jpg
+            image.mimetype: image/jpeg
+            */
+
+        let extension = image.mimetype.split('/')[1];
+
+        if (!/^(gif|heic|jpeg|jpg|png|svg|webp)$/.test(extension)) {
+
+            module.exports.message = `Wrong file extension: ${extension}`;
+            return res.redirect('/add');
+
+        }
+
+        let imageName = `${foodName}.${extension}`;
+
+        let querySQL = `SELECT * FROM food WHERE name = '${foodName}'`;
+
+        db.query(querySQL,(err,result) => {
+
+            if (err) {
+                return res.status(500).send(`<h1>ERROR ${err.message}\n
+                while performing\n
+                ${querySQL}</h1>`);
+            }
+
+    
+            if (result.length > 0) {
+
+                module.exports.message = `Food named ${foodName} is already exist`;
+                return res.redirect('/add');
+
+            }
+
+            querySQL = `INSERT INTO food (name,kosher_type,cuisine_id,
+                image, calories, prepare_time_min, ingredients,  type_of_dish)
+            VALUES ('${foodName}','${kosherType}',${cuisineId},'${imageName}',
+            ${calories},${prepareTimeMin},'${ingredients}','${typeOfDish}')`;
+
+            db.query(querySQL,(err) => {
+
+                if (err) {
+                    return res.status(500).send(`<h1>ERROR ${err.message}\n
+                    while performing\n
+                    ${querySQL}</h1>`);
+                }
+                // mv() - puts the file to some place in the disk
+                image.mv(`static/assets/img/${imageName}`,(err) => {
+
+                    if (err) {
+                        // t.b.d. - delete the row from the database
+                        // `DELETE FROM food WHERE name = ${foodName}`
+                        return res.status(500).send(`<h1>ERROR ${err.message}\n
+                                while performing mv() of \n
+                                static/assets/img/${imageName}</h1>`);
+                    }
+
+                    res.redirect('/');
+
+                }) // end of image.mv()
+
+            }) // end of db.query('INSERT ...')
+
+            
+        }) // end of db.query('SELECT ...')
+        
+
+    } // end of addFood()
+
+}
+
+44. views/index.ejs - changed column name from "cuisine id" to "cuisine"
+and the value for this column we get now from yum.cuisine
+and not from "yum.cuisine_id"
+
+45. In home.js replaced "SELECT * FROM food" by the join:
+    let querySQL = `SELECT f.* , c.name AS cuisine
+                    FROM food f JOIN cuisine c
+                        ON cuisine_id = c.id`;
+
+46. Change edit-food.ejs to make there every field 
+    for update (the image field is optional) -
+    pay attention that the right HTTP method for update is PUT,
+    but HTML forms directly support only GET and POST methods:
+
+<%- include('partials/header.ejs') %>
+<div class="container">
+    <% if (message) { %>
+        <p class="text-center text-danger"><%= message %></p>
+    <% } %>
+
+    <% if (food) { %>
+        <form class="add-food-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="food-name">Food Name</label>
+                    <input type="text" class="form-control" name="foodName" id="food-name" value="<%= food.name %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="kosher-type">Kosher Type</label>
+                    <select class="form-control" name="kosherType" id="kosher-type">
+                        <option value="" <% if (!food.kosher_type) { %> selected <% } %> >-- Choose Kosher Type --</option>
+                        <option value="parve" <% if (food.kosher_type==="parve") { %> selected <% } %>>Parve</option>
+                        <option value="milk" <% if (food.kosher_type==="milk") { %> selected <% } %>>Milk</option>
+                        <option value="meat" <% if (food.kosher_type==="meat") { %> selected <% } %>>Meat</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="cuisine">Cuisine</label>
+                    <select class="form-control" name="cuisine" id="cuisine" required>
+                        <option disabled>-- Choose Cuisine --</option>
+                        <% cuisines.forEach((cuisine, index) => { %>
+                            <option value="<%= cuisine.id %>" <% if (food.cuisine_id===cuisine.id) { %> selected <% } %>><%= cuisine.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="calories">Calories</label>
+                    <input type="number" class="form-control" name="calories" id="calories" placeholder="Calories"  value="<%= food.calories %>">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="prepare-time-min">Prepare Time, min</label>
+                    <input type="number" class="form-control" name="prepareTimeMin" id="prepare-time-min"  value="<%= food.prepare_time_min %>" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="ingredients">Ingredients</label>
+                    <textarea class="form-control" name="ingredients" id="ingredients" required>
+                        <%= food.ingredients %>
+                    </textarea>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="type-of-dish">Type of Dish</label>
+                    <select id="type-of-dish" name="typeOfDish" class="form-control">
+                        <option value="" <% if (!food.type_of_dish) { %> selected <% } %>>-- Choose Type of Dish --</option>
+                        <option value="dessert" <% if (food.type_of_dish==="dessert") { %> selected <% } %>>Dessert</option>
+                        <option value="soup" <% if (food.type_of_dish==="soup") { %> selected <% } %>>Soup</option>
+                        <option value="main" <% if (food.type_of_dish==="main") { %> selected <% } %>>Main</option>
+                        <option value="side dish" <% if (food.type_of_dish==="side dish") { %> selected <% } %>>Side Dish</option>
+                        <option value="drink" <% if (food.type_of_dish==="drink") { %> selected <% } %>>Drink</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success float-right">Update Food</button>
+        </form>
+    <% } else { %>
+        <p class="text-center">Food Not Found. Go <a href="/add">here</a> to add foods.</p>
+    <% } %>
+</div>
+</div>
+</body>
+</html>
+
+47. In model/food.js create new function getEditPage -
+it should supply again the list of cuisines and the food by id:
+
+    getEditPage: (req, res) => {
+
+        let foodId = req.params.id;
+
+        cuisine.getCuisineList((err,cuisines) => {
+
+            if (err) {
+                return res.status(500).send(err.message);
+            }
+
+            let querySQL = `SELECT * FROM food
+                   WHERE id = ${foodId}`;
+
+            db.query(querySQL, (err,foods) => {
+
+                if (err) {
+                    return res.status(500).send(`<h1>ERROR ${err.message}\n
+                    while on purpose to edit food performing\n
+                    ${querySQL}</h1>`);
+                }
+
+                res.render('edit-food.ejs', {
+                    title: 'Edit | Yummy',
+                    message: module.exports.message,
+                    cuisines: cuisines,
+                    food: foods.length > 0 ? foods[0] : null
+                })
+            })
+
+        })
+
+    },
+
+48. Add this to the routing in yummy.js and check, that you 
+see the form with the properties of the specific food:
+
+/******* ROUTING *********/
+// GET - HTTP method, that asks to bring some
+// data or page, sometimes, in accordance to parameters
+app.get('/',home.getHomePage);
+
+app.get('/add',food.getAddPage);
+app.post('/add',food.addFood);
+
+app.get('/edit/:id',food.getEditPage);
+
+/*********LISTENER *********/
+
+49. In model/food.js add new function editFood - for now 
+it just gets the data:
+
+    editFood: (req, res) => {
+
+        let foodId = req.params.id;
+
+        let foodName = req.body.foodName;
+        let cuisineId = +req.body.cuisine;
+        let calories = req.body.calories ? +req.body.calories : null;
+        let prepareTimeMin = +req.body.prepareTimeMin;
+        let ingredients = req.body.ingredients;
+        // CHOICE OPERATOR || - if we've got a value we use it, if not we want it to be "null"
+        let typeOfDish = req.body.typeOfDish || null;
+        let kosherType = req.body.kosherType || null;
+
+        res.send(`<h3>Going to change ${foodName} with id = ${foodId}</h3>`)
+
+    } // end of editFood()
+
+50. Add it to the router in yummy.js:
+
+/******* ROUTING *********/
+// GET - HTTP method, that asks to bring some
+// data or page, sometimes in accordance to parameters
+// POST - HTTP method, that asks to add data to the server,
+//       it also uses URL and PARAMETERS, but the main data
+//       comes inside BODY
+// PUT - like POST, but for UPDATES (sometimes POST is used 
+//          instead of PUT for updates),
+//       the problem with PUT is that HTML forms directly 
+//       support only GET and POST methods, so for now we
+//        use POST
+// DELETE - like GET, but for DELETES 
+//  
+app.get('/',home.getHomePage);
+
+app.get('/add',food.getAddPage);
+app.post('/add',food.addFood);
+
+app.get('/edit/:id',food.getEditPage);
+app.post('/edit/:id',food.editFood);
+
+/*********LISTENER *********/
+
+51. Try to submit and see the sentense of "Going to update ..." 
+
+52. Finish in model/food.js editFood and ensure that it works:
+
+    Here we use a slightly different syntax for querySQL -
+    with bind variables, that are arranged into an array 
+    in accordance with their places in the SQL.
+
+    It is simpler to write, but more difficult to debug.
+    And it is the best practice as it runs faster.
+    Here we need it to be able to update fields when the
+    values are NULL without additional complexity.
+
+    In the future we should use the syntax with the bind variables.
+
+    editFood: (req, res) => {
+
+        let foodId = req.params.id;
+
+        let foodName = req.body.foodName;
+        let cuisineId = +req.body.cuisine;
+        let calories = req.body.calories ? +req.body.calories : null;
+        let prepareTimeMin = +req.body.prepareTimeMin;
+        let ingredients = req.body.ingredients;
+        // CHOICE OPERATOR || - if we've got a value we use it, if not we want it to be "null"
+        let typeOfDish = req.body.typeOfDish || null;
+        let kosherType = req.body.kosherType || null;
+
+        let querySQL = `UPDATE food SET name = ?,
+              cuisine_id = ?, calories = ?,
+              prepare_time_min = ?,
+              ingredients = ?, type_of_dish = ?,
+              kosher_type = ?
+              WHERE id = ?`;
+
+        let inputSQL = [foodName,cuisineId,calories,prepareTimeMin,
+            ingredients,typeOfDish,kosherType,foodId];
+
+        db.query(querySQL,inputSQL, (err) => {
+
+            if (err) {
+                return res.status(500).send(`<h1>ERROR ${err.message}\n
+                while performing\n
+                ${querySQL}</h1>`);
+            }
+
+            res.redirect('/');
+
+        }) // end of db.query('UPDATE ...')
+
+        
+
+    } // end of editFood()
+
+53. Create in model/food.js new function deleteFood:
+
+This function should delete the record from DB and 
+the image file from the disk.
+
+    deleteFood: (req, res) => {
+
+        let foodId = req.params.id;
+
+        let querySQL = `SELECT * FROM food WHERE id = ${foodId}`;
+
+        db.query(querySQL,(err,foods) => {
+
+            if (err) {
+                return res.status(500).send(`<h1>ERROR ${err.message}\n
+                while getting image name for DELETE and performing\n
+                ${querySQL}</h1>`);
+            }
+
+            let imageName = foods[0].image;
+
+            querySQL = `DELETE FROM food WHERE id = ${foodId}`;
+            
+            db.query(querySQL,(err) => {
+                
+                if (err) {
+                    return res.status(500).send(`<h1>ERROR ${err.message}\n
+                    while performing\n
+                    ${querySQL}</h1>`);
+                }
+
+                fs.unlink(`static/assets/img/${imageName}`,(err) => {
+
+                    if (err) {
+                        return res.status(500).send(`<h1>ERROR ${err.message}\n
+                        while succeeded to perform\n
+                        ${querySQL}\n
+                        and failed to remove static/assets/img/${imageName}</h1>`);
+                    }
+
+                    res.redirect('/');
+
+                }) // end of deleting the image
+                
+            }) // end of db.query('DELETE ...')
+            
+        }) // end of db.query('SELECT IMAGE NAME ...')
+    }
+
+54. In yummy.js add routing for it and ensure it works:
+
+/******* ROUTING *********/
+// GET - HTTP method, that asks to bring some
+//       data or page, sometimes in accordance to parameters
+// POST - HTTP method, that asks to add data to the server,
+//       it also uses URL and PARAMETERS, but the main data
+//       comes inside BODY
+// PUT - like POST, but for UPDATES (sometimes POST is used 
+//          instead of PUT for updates),
+//       the problem with PUT is that HTML directly 
+//       supports only GET and POST methods, so for now we
+//        use POST
+// DELETE - like GET, but for DELETE,
+//         and the same problem as with PUT 
+// 
+app.get('/',home.getHomePage);
+
+app.get('/add',food.getAddPage);
+app.post('/add',food.addFood);
+
+app.get('/edit/:id',food.getEditPage);
+app.post('/edit/:id',food.editFood);
+app.get('/delete/:id',food.deleteFood);
+
+/*********LISTENER *********/
+
+55. Mazal Tov!
+Our code here is not optimal, but it is definitely a start.
+
+OPTIONAL additions:
+   a) while performing editFood - to replace the image 
+   b) while performing deleteFoor - to show some 
+      "Are you sure? ..." screen or alert and to enable 
+      the user to cancel the deletion or to proceed with it.
+   c) add options to add/edit/delete cuisine 
+
+*****************************************************************
+*                                                               *
+*                             DEPLOYMENT                        *
+*                                                               *
+*****************************************************************
+
+56. Go to the hosting to the part "Databases" -> Database Wizard
+
+Create there db for your app + user for this DB + give the user all 
+the privileges.
+
+If you'd like to change something - use there tool "Manage My Databases"
+
+57. Go locally to your database and export it in SQL format
+    or just copy the text that creates and fills your tables.
+
+    Import or
+    just run this SQL in PHPMyAdmin on the hosting.
+
+    If you see some errors, fix SQL and run until perfect.
+
+58. Create file yummy/.env
+
+This is an invisible file (it's name starts with a dot .). 
+
+It should run in the development environment and be for the reference
+in the production environment.
+
+So, fill it with real assignments for the development 
+and with commented rows for production:
+
+export NODE_ENV='development'
+export PORT=3017
+export DB_USER='root'
+export DB_PASS=''
+export DB_NAME='yummy'
+
+
+#export NODE_ENV='production'
+#export DB_USER='knowled6_yummy_nat'
+#export DB_PASS='Taim9876!'
+#export DB_NAME='knowled6_yummy_natalie'
+
+59. From now on when you start your local server, perform 
+the next commands:
+
+$ cd yummy
+$ source .env
+$ npm start
+
+This way these variables (NODE_ENV, PORT, DB_USER, DB_PASS, DB_NAME) will
+exist only in the specific session. The server will be able to get
+them from the environment.
+
+60. In yummy.js set variables like this:
+
+/********** VARIABLES **********/
+// CHOICE OPERATOR || - if we've got a value we use it, if not we want it to be 3053
+let port = process.env.PORT || 3053;
+let nodeEnv = process.env.NODE_ENV.toLowerCase();
+global.hostingDir =  nodeEnv==='development' ? '' : '/natalie/yummy';
+
+61. In yummy.js set DB connection object like this:
+
+/*********** DB CONNECTION **********/
+const db = mysql.createConnection({
+    host: 'localhost', // or '127.0.0.1'
+    port: 3306,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER, 
+    password: process.env.DB_PASS
+})
+
+Pay attention, if you've got different local DB port, you
+should have environment variable for it too.
+
+62. From now on we need all the changes only because our app
+runs in production not from the user's home, but from some directory.
+
+63. In yummy.js set middleware for the static files like this:
+
+app.use(hostingDir,express.static(path.join(__dirname,'static')));
+
+64. In yummy.js set routing with the "hostingDir" variable like this:
+
+app.get(`${hostingDir}/`,home.getHomePage);
+
+app.get(`${hostingDir}/add`,food.getAddPage);
+app.post(`${hostingDir}/add`,food.addFood);
+
+app.get(`${hostingDir}/edit/:id`,food.getEditPage);
+app.post(`${hostingDir}/edit/:id`,food.editFood);
+app.get(`${hostingDir}/delete/:id`,food.deleteFood);
+
+65. In yummy/views/partials/header.ejs add hostingDir variable to the link:
+
+<nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1" ><a href="/">Yummy</a></span>
+        <a class="float-right" href="<%= hostingDir %>/add" title="Add a New Food">Add a Food</a>
+    </nav>
+
+66. In yummy/views/index.ejs add hostingDir variable to the location of the
+image and to the links:
+
+                           <td><img src="<%= hostingDir %>/assets/img/<%= yum.image %>" class="rounded-circle food-img" alt=""></td>
+                            <td><%= yum.name %></td>
+                            <td><%= yum.kosher_type %></td>
+                            <td><%= yum.cuisine %></td>
+                            <td><%= yum.calories %>kcal</td>
+                            <td><%= yum.prepare_time_min %>min</td>
+                            <td><%= yum.ingredients %></td>
+                            <td><%= yum.type_of_dish %></td>
+                            <td>
+                                <a href="<%= hostingDir %>/edit/<%= yum.id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                <a href="<%= hostingDir %>/delete/<%= yum.id %>" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="text-center">No food found. Go <a href="<%= hostingDir %>/add" >here</a> to add food.</p>
+        <% } %>
+
+67. In yummy/views/edit-food.ejs you've got link too:
+
+<% } else { %>
+        <p class="text-center">Food Not Found. Go <a href="<%= hostingDir %>/add">here</a> to add foods.</p>
+    <% } %>
+
+68. Now in yummy/model/home.js and in food.js you should find 
+
+    all the places with "render" - as now all the templates (remember partials?)
+
+    needs "hostingDir" variable too. Like this:
+
+    res.render('index.ejs', {
+        title: 'Yummy',
+        food: result,
+        hostingDir
+      })
+
+69. Also in home.js and food.js find all "redirect" commands and 
+
+    "hostingDir" variable to their path too
+
+70. Check on your local machine that everything still works
+
+71. Now you connect with FTP client (FileZilla, for example) to our 
+   
+    hosting, create there dir "yummy" inside your directory and
+
+    copy there all the contents of local "yummy" except of "node_modules",
+
+    .env and package-lock.json 
+
+72. In cPanel on the hosting you go to the Tools -> NodeJS and
+    click on "Create".
+
+    Choose the right NodeJS version (closest to your local one)
+    Choose app mode "production"
+    Choose app root like "panda/natalie/yummy"
+    Choose app URL like panda.knowledger.guru/natalie/yummy
+    Choose app startup file like yummy.js
+    Choose log file location like /home/knowled6/panda/natalie/yummy/yummy1.log
+
+    Go down to the section of "environmental variables" and add 
+    your production variables with their values (they're commented in .env)
+
+    Click "CREATE"
+    Click "Stop"
+    Click "npm install"
+    Click "Start"
+
+73. Go in the browser to your app URL, like panda.knowledger.guru/natalie/yummy
+    and check that everything is working.
+
+    If you fix something - upload it from your local machine,
+    and restart NodeJS app again.
+
+74. You're now able to upload files from your laptop to your app
+    and to keep all your data in the DB on a real LINUX server.
+    It's kinda cool, right?
+
+
+
+
+
+
+

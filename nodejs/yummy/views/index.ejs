@@ -1,0 +1,45 @@
+<%- include('partials/header.ejs') %>
+    <div class="table-wrapper">
+        <% if (food.length > 0) {%>
+            <table class="table table-hovered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Kosher Type</th>
+                        <th scope="col">Cuisine</th>
+                        <th scope="col">Calories</th>
+                        <th scope="col">Prepare Time</th>
+                        <th scope="col">Ingredients</th>
+                        <th scope="col">Type of Dish</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% food.forEach((yum, index) => { %>
+                        <tr>
+                            <th scope="row"><%= yum.id %></th>
+                            <td><img src="/assets/img/<%= yum.image %>" class="rounded-circle food-img" alt=""></td>
+                            <td><%= yum.name %></td>
+                            <td><%= yum.kosher_type %></td>
+                            <td><%= yum.cuisine %></td>
+                            <td><%= yum.calories %>kcal</td>
+                            <td><%= yum.prepare_time_min %>min</td>
+                            <td><%= yum.ingredients %></td>
+                            <td><%= yum.type_of_dish %></td>
+                            <td>
+                                <a href="/edit/<%= yum.id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                <a href="/delete/<%= yum.id %>" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="text-center">No food found. Go <a href="/add" >here</a> to add food.</p>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>

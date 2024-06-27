@@ -1,0 +1,13 @@
+build it with css GRID,
+          use both "mouse click" and "keyboard" events,
+          with minimum of the listeners - using
+                         event propagation.
+          It should perform the actions: +,-,*,/,%,power,
+          root, factorial, translating number from binary 
+          to decimal, from decimal to binary, from hexadecimal
+          to decimal, from decimal to hexadecimal.
+          Optionally: translating numbers from decimal to 
+          roman and from roman to decimal.
+          Optionally - more functions.
+      This project will be evaluated for the themes of:
+        "algorithms and advanced DOM".

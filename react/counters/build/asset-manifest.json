@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/natalie/hw-2023-06-23/counters/static/css/main.a9c5fb5a.css",
+    "main.js": "/natalie/hw-2023-06-23/counters/static/js/main.3caa7570.js",
+    "index.html": "/natalie/hw-2023-06-23/counters/index.html",
+    "main.a9c5fb5a.css.map": "/natalie/hw-2023-06-23/counters/static/css/main.a9c5fb5a.css.map",
+    "main.3caa7570.js.map": "/natalie/hw-2023-06-23/counters/static/js/main.3caa7570.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a9c5fb5a.css",
+    "static/js/main.3caa7570.js"
+  ]
+}

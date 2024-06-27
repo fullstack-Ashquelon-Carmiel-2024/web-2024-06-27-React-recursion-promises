@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,body {
+    height: 100%;
+}
+
+body > div {
+    height: 50%;
+    width: 50%;  /* if not enough space for two, use 49.5% */
+    float: left;
+}
+
+.top-left {
+    background: cornflowerblue;
+}
+
+.top-right {
+    background: coral;
+}
+
+.bottom-left {
+    background: lightgreen;
+}
+
+.bottom-right {
+    background:lemonchiffon;
+}

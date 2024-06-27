@@ -1,0 +1,51 @@
+Choice between the modes.
+
+Mode1: Machine thinks about a number, we guess
+
+       HTML: Rules: Machine is going to think about a number from 1 to 100,
+             you should guess it.
+
+             Show count of trials(it's Math.ceil(Math.log2(200)))
+             Input of a number 
+             Button for check or input with listener on "change"
+             "Start Game" - the listener could be removed till
+                             the player guesses the number 
+             Output (for machine answers(my num is smaller or my num is greater
+                     or you won or you failed) and validation)
+             Number to guess - hidden - optional
+             What is the maximal number - optional
+             Some super-response when we win - optional
+
+Mode2: We think about a number, the machine guesses 
+
+       HTML: Rules: ................
+
+             Three buttons: my number is greater, my number is smaller,
+                             you've got it!
+             Where the computer shows it's number.
+             What is the maximal number - optional
+             Some super-response when we win - optional
+
+Our number: 39, we play from 1 to 100
+
+Turn1: min=1, max=100, center = Math.floor((min+max-1)/2) = 50
+Our num is smaller
+
+Turn2: min=1, max=center-1=49, center = Math.floor((min+max-1)/2) = 24
+Our num is greater
+
+Turn3: min=center+1=25, max=49, center = Math.floor(min+(max-min-1)/2)
+                                         Math.floor((min+max-1)/2) = 36
+Our num is greater
+
+Turn4: min=center+1=37, max=49, center = Math.floor((min+max-1)/2) = 42
+Our num is smaller
+
+Turn5: min=37 max=center-1=41, center = Math.floor((min+max-1)/2) = 38
+Our num is greater
+
+Turn6: min=center+1=39, max=41, center = Math.floor((min+max-1)/2) = 39
+You've got it!!!!!!!
+
+Mode3: - optional - manage game of person vs person
+

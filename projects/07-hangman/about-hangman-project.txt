@@ -1,0 +1,55 @@
+HTML and functionality
+
+--Rules of the game
+
+--Letter buttons should be created 
+by loop over an alfabeth array (like ['א','ב','ג', ...]
+or ['A','B','C'...]
+)
+
+const allBtns = alfabeth.map(letter => {
+
+   const newBtn = document.createElement('button');
+   // classList.add
+   // newBtn.innerText = ....
+
+})
+
+--On START choose random word from array of 
+words like ['hangman','strawberry']
+and show it as S _ _ _ _ _ _ _ _ Y
+or H _ N _ _ _ N
+(and the shown letters should be locked)
+(lock START button also)
+
+--All the alfabeth letters should be 
+located in one container, and this container 
+should have one listener for them all.
+
+--Also there should be a possibility to
+enter a letter from the keyboard 
+(the second listener is for "window").
+
+-- There should be DIV (or CANVAS) where 
+   we put the parts of the hangman
+   (they should be hidden at the Start)
+
+-- On the player's turn:
+   a)player clicks a letter button on the screen 
+   or on the keyboard
+   b) the letter is locked
+   c) check if the letter is included inside the
+      word
+      i) if yes, show it
+         and check if this the last letter
+            and then the player wins
+      ii) if no,  add part of the hangman
+         and show that one less trials left
+         and check may be he already lost
+      iii) If the player won or lost, 
+        START button should again be active
+
+
+
+-- OPTIONAL: more than one language
+-- OPTIONAL: could choose a subject

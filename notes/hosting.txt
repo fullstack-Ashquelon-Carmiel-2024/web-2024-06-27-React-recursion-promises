@@ -1,0 +1,81 @@
+------------------------------------------
+domain name - just a string
+(like google.com, like wikipedia)
+
+kafe-totachim.co.il
+kafe-totachim.com
+kafe-totachim.guru
+kafe-totachim.net
+
+shared hosting: shared CPU, shared memory, shared disk space, shared network
+we look for: security, speed, support, scalability, backups, price, 
+             specialization, almost no downtime, updates and modernization
+
+hosting - is a server that supplies space, memory,cpu, and
+some applications - for the files of our app or site 
+
+DNS - domain name server - contains lists of 
+domains and their current hostings 
+
+
+When smbdy types in address line domain name, 
+the browser sends request,
+it gets firstly to some DNS server, 
+there it gets the internet address of the hosting server,
+like 34.123.250.45
+-----------------------------------
+to by hosting space
+------------------------------------------
+we should check reviews: for 
+   - speed
+   - relation between the price and memory, space, CPU, etc.
+   - security 
+   - almoust no downtime
+   - very important - good support
+
+------------------------------------------
+the hosting
+------------------------------------------
+https://de1.fcomet.com:2083/ - this is an address of CPanel
+knowled6
+Spontani234!
+https://panda.knowledger.guru/ - this is our domain name
+
+
+
+to put files for the main domain we put them into public_html
+or into public_html/some_folder
+
+example for seeing site from the folder public_html/pizza:
+https://knowledger.guru/pizza/
+------------------------------------------------
+
+We will use our subdomain
+https://panda.knowledger.guru/
+
+We create directories by names inside the directory "panda",
+for example, panda/natalie/pizza
+
+we put there our files, and now we can see
+the pizza site for example here:
+
+https://panda.knowledger.guru/natalie/pizza
+
+-----------------------------------------------
+to upload homework
+-----------------------------------------------
+1. go to the hosting -> file manager -> panda -> your-name
+2. create today dir, put there the homework
+3. check it at https://panda.knowledger.guru/your-name
+4. at the classroom respond to the mission with the link
+
+-----------------------------------------------
+FTP - File Transfer Protocol
+-----------------------------------------------
+or FTP program like FileZilla
+or browser FTP extension 
+
+Host: de1.fcomet.com
+Username: knowled6
+Password: Spontani234!
+Port: 22 (not needed, it is a default)

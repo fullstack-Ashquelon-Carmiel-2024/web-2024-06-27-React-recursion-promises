@@ -1,0 +1,53 @@
+body {
+    font-size: 2rem;
+}
+
+.container {
+    display: flex;
+}
+
+.first, .second, .third {
+    width: 300px;
+    height: 175px;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.third {
+    font-size: 3rem;
+}
+
+button {
+    cursor: pointer;
+}
+
+.purple {
+    background: purple;
+    color: white;
+}
+
+.orange {
+    background: orangered;
+    color: lightskyblue;
+}
+
+.red {
+    background: red;
+    color: lightskyblue;
+}
+
+.green {
+    background: green;
+    color: lightskyblue;
+}
+
+.yellow {
+    background: yellow;
+    color: navy;
+}
+
+.invisible {
+    display: none;
+}

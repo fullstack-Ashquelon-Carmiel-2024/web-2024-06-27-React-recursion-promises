@@ -1,0 +1,3 @@
+-- Divide HTML into 4 parts 
+-- Choose 4 CSS properties to explain 
+-- Create 4 explanations (at least 2 - interactive)

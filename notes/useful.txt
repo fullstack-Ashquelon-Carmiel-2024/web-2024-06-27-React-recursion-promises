@@ -1,0 +1,16 @@
+VS CODE EXTENSIONS
+-------------------
+
+Live Server 
+Emojisense
+
+Add Emojee
+-------------
+Or by installling Emojisense and using Ctrl-i
+
+or
+
+Windows: Windows + v
+         Windows + ;
+         Windows + .
+Mac: Ctrl + Cmd + Space

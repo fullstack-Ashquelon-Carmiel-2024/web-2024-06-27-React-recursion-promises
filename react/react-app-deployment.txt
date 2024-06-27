@@ -1,0 +1,28 @@
+1. For example you'd like to upload the homework "Counters"
+
+2. So you create on the hosting directory panda/<your name>/hw-2023-06-23/counters
+
+3. Now you go to your React app package.json and add there
+   the entry "homepage", like this:
+
+   {
+  "name": "counters",
+  "version": "0.1.0",
+  "homepage": "https://panda.knowledger.guru/natalie/hw-2023-06-23/counters",
+
+4. In the terminal:
+
+   $ cd react/counters
+
+   (if there is no node_modules, run "npm i")
+
+   $ npm run build
+
+5. Now you've got directory "build" 
+
+6. Use FTP client like Filezilla and copy the contents of
+   your local "build" dir to "counters" dir on the hosting
+
+7. Now check it in the browser at:
+
+https://panda.knowledger.guru/<your name>/hw-2023-06-23/counters
