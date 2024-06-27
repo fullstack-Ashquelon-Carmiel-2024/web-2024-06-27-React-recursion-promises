@@ -63,6 +63,75 @@ function power(a,n) {
 // Step4: 2!==0 && 2!==1 => no exit, return power(3,1) * 3 // keep * 3 * 3 * 3
 // Step5: 1!==0 but 1===1 => return 3 // * 3 - from the step4 and * 3 * 3 * 3 from the previous steps
 
+// Copy array (not the pointer, but the array itself)
+const ar1 = [false, 45, 'tree','bird',0.5,undefined];
+const ar2 = ar1.map(el => el);
+const ar3 = ar1.slice(0);
+// SHALLOW COPY - good copy, but only of one layer
+
+const ar4 = [667, {firstName: 'John'}, ['a','b','c'],'hello'];
+const ar5 = ar4.map(el => el);
+
+const ar6 = [{studentName: 'Mary', grades: [90,79, 85, 100, 100]}]
+
+/***************************** */
+const a1 = []
+const a2 = [5]
+const a3 = [5, 7, 100, 1024, 3444]
+const a4 = [5, 7, 100, 1024, 344]
+const a5 = [0.1, 6, 3000, 1024, 344]
+const a6 = [-4, 3.5]
+const a7 = [-4, -5]
+
+function checkAscending(ar) {
+
+    if (ar.length < 2 ) return false;
+    if (ar.length === 2) return ar[0] < ar[1];
+
+    return ar[0] < ar[1] && checkAscending(ar.slice(1));
+
+}
+// checking a3 = [5, 7, 100, 1024, 3444]
+//step1: 5 < 7 && check if [7, 100, 1024, 3444] ascending
+//step2: 7 < 100 && check if [100, 1024, 3444] ascending
+//step3: 100 < 1024 && check if [1024, 3444] ascending
+//step4: return 1024 < 3444
+//           true
+
+const aaa = [a1,a2,a3,a4,a5,a6,a7]
+
+aaa.forEach(el => {
+
+    console.log(`check `,el)
+    console.log(checkAscending(el))
+
+})
+
+/******************** */
+// Fibonacci series
+// 1,1,2,3,5,8,13,21 ...
+// MISSION:
+// a) create recursive function fibonacci, that
+//    calculate n-th number in the series
+// b) create recursive function showFibonacci, that
+//    shows n members of the series
+
+function fibonacci(n) {
+
+    if (n < 1) return "invalid input";
+    if (n <= 2) return 1;
+
+    return fibonacci(n - 1) + fibonacci(n - 2);
+
+}
+// sttep1: fibonacchi(6): return fibonacci(5)+fibonacci(4)
+// sttep2: fibonacchi(5): return fibonacci(4)+fibonacci(3)
+// sttep2: fibonacchi(4): return fibonacci(3)+fibonacci(2)=fibonacci(3)+1
+
+console.log(fibonacci(9))
+
+
+
 
 
 
