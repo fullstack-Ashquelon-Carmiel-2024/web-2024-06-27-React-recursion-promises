@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AddTodo from './components/addTodo/AddTodo';
 import Header from "./components/header/Header";
 import TodoList from "./components/todoList/TodoList";
 
@@ -37,6 +38,16 @@ function App() {
 
   }
 
+  const addNew = ({mission, important}) => {
+
+    const newTodos = todos.concat({text:mission, important,
+                        completed: false, id: Date.now()
+                    });
+
+    setTodos(newTodos);
+
+  }
+
   console.log(`wrapperColor outside "changeColor" function is ${wrapperColor}`);
 
   const changeColor = () => {
@@ -68,17 +79,15 @@ function App() {
   // MISSION01: a) add removeTodo to the Context
   //  b) Don't pass it as a prop
   //  c) Go to TodoList
-
+  console.log(todos)
   return (
-    <Context.Provider value={{comment, removeTodo}}>
+    <Context.Provider value={{comment, removeTodo, addNew}}>
     <div className="App">
       <Header appTitle={appTitle} />
       <div className="wrapper" style={{ background: wrapperColor }}>
         <button onClick={changeColor} style={{marginLeft: "2rem"}}>Change Color</button>
         <button onClick={changeTitle}>Change Title</button>
-{/* MISSION: a) create component AddTodo
-    b) import it into App.jsx
-    c) put it here */}
+        <AddTodo />
         <TodoList importantColor={color} todos={todos}
                   changeCompleted={changeCompleted} />
       </div>

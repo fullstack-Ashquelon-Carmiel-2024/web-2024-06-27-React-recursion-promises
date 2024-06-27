@@ -10,7 +10,7 @@ export default function TodoItem({ todo, num, importantColor,
 
   const { id, text, completed, important } = todo;
   const { comment, removeTodo } = useContext(Context);
-  console.log(comment);
+  //console.log(comment);
   const defaultColor = "white";
   const style = {
     li: {

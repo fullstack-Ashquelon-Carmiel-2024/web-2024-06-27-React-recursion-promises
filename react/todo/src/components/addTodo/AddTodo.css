@@ -1,0 +1,12 @@
+.AddTodoForm {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-left: 2rem;
+    gap: 1.5rem;
+}
+
+.AddTodoForm input, .AddTodoForm button {
+    padding: 5px;
+    font-size: 1.2rem;
+}

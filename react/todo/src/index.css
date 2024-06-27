@@ -38,3 +38,7 @@ h1 {
 h5 {
   margin: 20px;
 }
+
+button {
+  cursor: pointer;
+}
