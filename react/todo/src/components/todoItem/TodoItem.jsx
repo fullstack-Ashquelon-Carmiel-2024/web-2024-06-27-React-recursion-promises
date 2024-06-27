@@ -6,10 +6,10 @@ import Context from '../../contexts/context';
 //  b) get removeTodo from the value of the context
 //  c) use removeTodo instead of deleteTodo
 export default function TodoItem({ todo, num, importantColor,
-                                   changeCompleted, deleteTodo }) {
+                                   changeCompleted }) {
 
   const { id, text, completed, important } = todo;
-  const { comment } = useContext(Context);
+  const { comment, removeTodo } = useContext(Context);
   console.log(comment);
   const defaultColor = "white";
   const style = {
@@ -42,7 +42,7 @@ export default function TodoItem({ todo, num, importantColor,
         <strong>{num + ".\xa0"}</strong>
         {text}
       </span>
-      <button className="delete" onClick={()=> deleteTodo(id)}>&times;</button>
+      <button className="delete" onClick={()=> removeTodo(id)}>&times;</button>
     </li>
   );
 }

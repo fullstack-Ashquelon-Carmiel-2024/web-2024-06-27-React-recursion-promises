@@ -5,8 +5,7 @@ import TodoItem from "../todoItem/TodoItem";
 //  b) don't pass deleteTodo as a prop
 //  c) go to TodoItem
 export default function TodoList({todos,importantColor,
-                                      changeCompleted, 
-                                      deleteTodo}) {
+                                      changeCompleted}) {
   const style = {
     ul: {
       listStyle: "none",
@@ -23,7 +22,6 @@ export default function TodoList({todos,importantColor,
       num={idx+1}
       importantColor={importantColor}
       changeCompleted={changeCompleted}
-      deleteTodo={deleteTodo}
     />
   )) : 
   <h5>😴Sorry, no more missions</h5>;

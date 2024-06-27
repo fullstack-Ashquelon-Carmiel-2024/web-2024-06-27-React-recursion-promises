@@ -33,8 +33,7 @@ function App() {
 
   const removeTodo = (id) => {
 
-    const newTodos = todos.filter(todo => todo.id !== id );
-    setTodos(newTodos);
+    setTodos(todos.filter(todo => todo.id !== id ));
 
   }
 
@@ -71,15 +70,17 @@ function App() {
   //  c) Go to TodoList
 
   return (
-    <Context.Provider value={{comment: comment}}>
+    <Context.Provider value={{comment, removeTodo}}>
     <div className="App">
       <Header appTitle={appTitle} />
       <div className="wrapper" style={{ background: wrapperColor }}>
         <button onClick={changeColor} style={{marginLeft: "2rem"}}>Change Color</button>
         <button onClick={changeTitle}>Change Title</button>
+{/* MISSION: a) create component AddTodo
+    b) import it into App.jsx
+    c) put it here */}
         <TodoList importantColor={color} todos={todos}
-                  changeCompleted={changeCompleted} 
-                  deleteTodo={removeTodo} />
+                  changeCompleted={changeCompleted} />
       </div>
     </div>
     </Context.Provider>

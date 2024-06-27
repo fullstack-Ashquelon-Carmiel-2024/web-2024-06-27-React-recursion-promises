@@ -6,7 +6,7 @@ module.exports = {
                     FROM food f JOIN cuisine c
                         ON cuisine_id = c.id`;
 
-    db.query(querySQL,(err, result) => {
+    db.query(querySQL,(err, food) => {
 
       if (err) {
 
@@ -20,7 +20,7 @@ module.exports = {
       // Controller (we've got it here close to the Model)
       res.render('index.ejs', {
         title: 'Yummy',
-        food: result
+        food
       })
 
     })
